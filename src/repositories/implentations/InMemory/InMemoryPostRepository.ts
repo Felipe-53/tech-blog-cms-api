@@ -1,33 +1,32 @@
 import { Post } from '../../../entities/Post'
 import { IPostRepository } from '../../../repositories/IPostRepository';
+import data from './inMemoryData';
 
 export class InMemoryPostRespository implements IPostRepository {
-  private posts: Post[] = []
-
   async create(post: Post) {
-    this.posts.push(post)
+    data.posts.push(post)
     return post
   }
 
   async findAllByAuthorId(authorId: string) {
-    const posts = this.posts.filter(post => post.author.id === authorId)
+    const posts = data.posts.filter(post => post.author.id === authorId)
     return posts
   }
 
   async findBySlug(slug: string) {
-    const post = this.posts.find(post => post.slug === slug)
+    const post = data.posts.find(post => post.slug === slug)
     if (!post) return null
     return post
   }
 
   async findById(id: string) {
-    const post = this.posts.find(post => post.id === id)
+    const post = data.posts.find(post => post.id === id)
     if (!post) return null
     return post
   }
 
   async update(id: string, updatedPostData: Post) {
-    const post = this.posts.find(post => post.id === id)
+    const post = data.posts.find(post => post.id === id)
     if (!post) throw Error(`Could not find post with id ${id}`)
     for (const prop of Object.keys(updatedPostData)) {
       if (updatedPostData[prop]) {
@@ -38,9 +37,9 @@ export class InMemoryPostRespository implements IPostRepository {
   }
 
   async delete(id: string) {
-    let previousLegth = this.posts.length
-    this.posts = this.posts.filter(post => post.id !== id)
-    let newLength = this.posts.length
+    let previousLegth = data.posts.length
+    data.posts = data.posts.filter(post => post.id !== id)
+    let newLength = data.posts.length
     if (previousLegth === newLength) {
       throw Error(`Trying to delete unexisting post with id ${id}`)
     }
