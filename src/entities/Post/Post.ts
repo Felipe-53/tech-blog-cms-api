@@ -10,9 +10,9 @@ export function PostFactory(props: {
 
   class Post {
     readonly id: string
+    private _title: string
+    private _body: string
     author: Author
-    title: string
-    body: string
     excerpt: string
     categories: Category[]
     slug: string
@@ -26,6 +26,32 @@ export function PostFactory(props: {
       if (!this.createdAt) this.createdAt = new Date()
       if (!this.updatedAt) this.updatedAt = new Date()
       if (!this.slug) this.slug = slug(this.title)
+    }
+
+    private updatePostDate() {
+      this.updatedAt = new Date()
+    }
+
+    private updateSlug(newTitle: string) {
+      this.slug = slug(newTitle)
+    }
+
+    set body(body: string) {
+      this._body = body
+      this.updatePostDate()
+    }
+
+    get body() {
+      return this._body
+    }
+
+    set title(title: string) {
+      this._title = title
+      this.updateSlug(title)
+    }
+
+    get title() {
+      return this._title
     }
   }
 
