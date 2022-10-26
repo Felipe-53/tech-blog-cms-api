@@ -1,7 +1,7 @@
-import { Post } from '../../entities/Post'
-import { IPostRepository } from "../IPostRepository";
+import { Post } from '../../../entities/Post'
+import { IPostRepository } from '../../../repositories/IPostRepository';
 
-export class InMemoryRespository implements IPostRepository {
+export class InMemoryPostRespository implements IPostRepository {
   private posts: Post[] = []
 
   async create(post: Post) {

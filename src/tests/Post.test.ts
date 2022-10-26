@@ -2,7 +2,7 @@ import { expect, describe, it } from 'vitest'
 import { CreatePostDTO } from '../dtos/CreatePostDTO'
 import { Author } from '../entities/Author/Author'
 import { Category } from '../entities/Category/Category'
-import { InMemoryRespository } from '../repositories/implentations/InMemoryRepository'
+import { InMemoryPostRespository } from '../repositories/implentations/InMemory/InMemoryPostRepository'
 import { FindAllPosts } from '../use-cases/FindAllPosts/FindAllPosts'
 import { FindPostBySlug } from '../use-cases/FindPostBySlug/FindPostBySlug'
 import { CreatePost } from '../use-cases/CreatePost/CreatePost'
@@ -30,7 +30,7 @@ const newPostData: CreatePostDTO = {
 }
 
 describe('djewiodj', () => {
-  const inMemoryRepo = new InMemoryRespository()
+  const inMemoryRepo = new InMemoryPostRespository()
 
   it('Should be able to create a Post', async () => {
     const createPost = new CreatePost(inMemoryRepo)
