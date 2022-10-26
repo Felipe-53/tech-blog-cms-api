@@ -6,6 +6,7 @@ import { InMemoryRespository } from '../repositories/implentations/InMemoryRepos
 import { FindAllPosts } from '../use-cases/FindAllPosts/FindAllPosts'
 import { FindPostBySlug } from '../use-cases/FindPostBySlug/FindPostBySlug'
 import { CreatePost } from '../use-cases/CreatePost/CreatePost'
+import { UpdatePost } from '../use-cases/UpdatePost/UpdatePost'
 
 const author: Author = {
   id: '1',
@@ -52,7 +53,21 @@ describe('djewiodj', () => {
     expect(searchedPost).not.toBeNull()
   })
 
-  it('Should be able to update post')
+  it('Should be able to update post', async () => {
+    const findAllPosts = new FindAllPosts(inMemoryRepo)
+    const originalPost = (await findAllPosts.execute(author.id))[0]
+    expect(originalPost).toBeDefined()
+    originalPost.title = 'My New Title'
+    originalPost.body = 'My New Body'
+    const updatePost = new UpdatePost(inMemoryRepo)
+    const updatedPost = await updatePost.execute(originalPost.id, originalPost)
+    expect(updatedPost.slug).toBe('my-new-title')
+    expect(updatedPost.updatedAt.getTime()).toBeGreaterThan(updatedPost.createdAt.getTime())
+  })
+
+  it('Should be able to delete a post', async () => {
+    // TODO
+  })
 })
 
 
