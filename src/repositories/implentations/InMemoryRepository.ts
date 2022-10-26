@@ -1,5 +1,5 @@
 import { Post } from '../../entities/Post'
-import { IPostRepository, UpdatePostData } from "../IPostRepository";
+import { IPostRepository } from "../IPostRepository";
 
 export class InMemoryRespository implements IPostRepository {
   private posts: Post[] = []
@@ -20,12 +20,18 @@ export class InMemoryRespository implements IPostRepository {
     return post
   }
 
-  async update(id: string, data: UpdatePostData) {
+  async findById(id: string) {
+    const post = this.posts.find(post => post.id === id)
+    if (!post) return null
+    return post
+  }
+
+  async update(id: string, updatedPostData: Post) {
     const post = this.posts.find(post => post.id === id)
     if (!post) throw Error(`Could not find post with id ${id}`)
-    for (const prop of Object.keys(data)) {
-      if (data[prop]) {
-        post[prop] = data[prop]
+    for (const prop of Object.keys(updatedPostData)) {
+      if (updatedPostData[prop]) {
+        post[prop] = updatedPostData[prop]
       }
     }
     return post
