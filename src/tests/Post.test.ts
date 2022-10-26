@@ -3,11 +3,11 @@ import { CreatePostDTO } from '../dtos/CreatePostDTO'
 import { Author } from '../entities/Author/Author'
 import { Category } from '../entities/Category/Category'
 import { InMemoryPostRespository } from '../repositories/implentations/InMemory/InMemoryPostRepository'
-import { FindAllPosts } from '../use-cases/FindAllPosts/FindAllPosts'
-import { FindPostBySlug } from '../use-cases/FindPostBySlug/FindPostBySlug'
-import { CreatePost } from '../use-cases/CreatePost/CreatePost'
-import { UpdatePost } from '../use-cases/UpdatePost/UpdatePost'
-import { DeletePost } from '../use-cases/DeletePost/DeletePost'
+import { FindAllPosts } from '../use-cases/Post/FindAllPosts/FindAllPosts'
+import { FindPostBySlug } from '../use-cases/Post/FindPostBySlug/FindPostBySlug'
+import { CreatePost } from '../use-cases/Post/CreatePost/CreatePost'
+import { UpdatePost } from '../use-cases/Post/UpdatePost/UpdatePost'
+import { DeletePost } from '../use-cases/Post/DeletePost/DeletePost'
 
 const author: Author = {
   id: '1',

@@ -1,6 +1,6 @@
-import { CreatePostDTO } from "../../dtos/CreatePostDTO";
-import { Post } from "../../entities/Post";
-import { IPostRepository } from "../../repositories/IPostRepository";
+import { CreatePostDTO } from "../../../dtos/CreatePostDTO";
+import { Post } from "../../../entities/Post";
+import { IPostRepository } from "../../../repositories/IPostRepository";
 
 export class CreatePost {
   constructor(

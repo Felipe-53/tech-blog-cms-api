@@ -1,6 +1,6 @@
-import { Category } from "../../entities/Category/Category";
-import { Post } from "../../entities/Post";
-import { IPostRepository } from "../../repositories/IPostRepository";
+import { Category } from "../../../entities/Category/Category";
+import { Post } from "../../../entities/Post";
+import { IPostRepository } from "../../../repositories/IPostRepository";
 
 export interface UpdatePostData {
   title?: string

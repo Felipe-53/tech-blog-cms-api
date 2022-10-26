@@ -1,4 +1,4 @@
-import { IPostRepository } from "../../repositories/IPostRepository";
+import { IPostRepository } from "../../../repositories/IPostRepository";
 
 export class DeletePost {
   constructor(
