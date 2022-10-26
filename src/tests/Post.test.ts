@@ -7,6 +7,7 @@ import { FindAllPosts } from '../use-cases/FindAllPosts/FindAllPosts'
 import { FindPostBySlug } from '../use-cases/FindPostBySlug/FindPostBySlug'
 import { CreatePost } from '../use-cases/CreatePost/CreatePost'
 import { UpdatePost } from '../use-cases/UpdatePost/UpdatePost'
+import { DeletePost } from '../use-cases/DeletePost/DeletePost'
 
 const author: Author = {
   id: '1',
@@ -66,7 +67,14 @@ describe('djewiodj', () => {
   })
 
   it('Should be able to delete a post', async () => {
-    // TODO
+    const findAllPosts = new FindAllPosts(inMemoryRepo)
+    const deletePost = new DeletePost(inMemoryRepo)
+    
+    const originalPost = (await findAllPosts.execute(author.id))[0]
+    expect(originalPost).toBeDefined()
+    await deletePost.execute(originalPost.id)
+    const posts = await findAllPosts.execute(author.id)
+    expect(posts.length).toBe(0)
   })
 })
 

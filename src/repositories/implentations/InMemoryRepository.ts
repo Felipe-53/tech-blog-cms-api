@@ -36,4 +36,13 @@ export class InMemoryRespository implements IPostRepository {
     }
     return post
   }
+
+  async delete(id: string) {
+    let previousLegth = this.posts.length
+    this.posts = this.posts.filter(post => post.id !== id)
+    let newLength = this.posts.length
+    if (previousLegth === newLength) {
+      throw Error(`Trying to delete unexisting post with id ${id}`)
+    }
+  }
 }

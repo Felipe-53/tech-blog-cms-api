@@ -6,4 +6,5 @@ export interface IPostRepository {
   findBySlug: (slug: string) => Promise<Post | null>
   findById: (id: string) => Promise<Post | null>
   update: (id: string, data: Post) => Promise<Post>
+  delete: (id: string) => Promise<void>
 }
