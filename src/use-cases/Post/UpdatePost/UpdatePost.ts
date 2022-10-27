@@ -1,4 +1,4 @@
-import { Category } from "../../../entities/Category/Category";
+import { Category } from "../../../entities/Category";
 import { Post } from "../../../entities/Post";
 import { IPostRepository } from "../../../repositories/IPostRepository";
 

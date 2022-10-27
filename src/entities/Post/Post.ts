@@ -1,5 +1,5 @@
 import { Author } from "../Author/Author"
-import { Category } from "../Category/Category"
+import { Category } from "../Category"
 
 export function PostFactory(props: {
   uuid: () => string,
