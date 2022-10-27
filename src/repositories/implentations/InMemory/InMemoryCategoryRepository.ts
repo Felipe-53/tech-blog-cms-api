@@ -1,4 +1,4 @@
-import { Category } from '../../../entities/Category/Category'
+import { Category } from '../../../entities/Category/'
 import { ICategoryRepository } from '../../../repositories/ICategoryRepository';
 import data from './inMemoryData'
 

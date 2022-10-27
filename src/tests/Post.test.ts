@@ -1,7 +1,7 @@
 import { expect, describe, it } from 'vitest'
 import { CreatePostDTO } from '../dtos/CreatePostDTO'
 import { Author } from '../entities/Author/Author'
-import { Category } from '../entities/Category/Category'
+import { Category } from '../entities/Category'
 import { InMemoryPostRespository } from '../repositories/implentations/InMemory/InMemoryPostRepository'
 import { FindAllPosts } from '../use-cases/Post/FindAllPosts/FindAllPosts'
 import { FindPostBySlug } from '../use-cases/Post/FindPostBySlug/FindPostBySlug'
