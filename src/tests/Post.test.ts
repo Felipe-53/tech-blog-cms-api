@@ -1,4 +1,4 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, test } from 'vitest'
 import { CreatePostDTO } from '../dtos/CreatePostDTO'
 import { Category } from '../entities/Category'
 import { InMemoryPostRespository } from '../repositories/implentations/InMemory/InMemoryPostRepository'
@@ -8,32 +8,51 @@ import { CreatePost } from '../use-cases/Post/CreatePost/CreatePost'
 import { UpdatePost } from '../use-cases/Post/UpdatePost/UpdatePost'
 import { DeletePost } from '../use-cases/Post/DeletePost/DeletePost'
 import { InMemoryAuthorRepository } from '../repositories/implentations/InMemory/inMemoryAuthorRepository'
+import { InMemoryCategoryRespository } from '../repositories/implentations/InMemory/InMemoryCategoryRepository'
+import { Author } from '../entities/Author'
 
 describe('Post CRUD', async () => {
   const inMemoryPostRepo = new InMemoryPostRespository()
   const inMemoryAuthorRepo = new InMemoryAuthorRepository()
+  const inMemoryCategoryRepository = new InMemoryCategoryRespository()
 
   const author = await inMemoryAuthorRepo.create({
     name: 'Felipe',
     admin: true,
   })
 
+  const categories: Category[] = []
+  categories.push(await inMemoryCategoryRepository.create(new Category('Node')))
+  categories.push(await inMemoryCategoryRepository.create(new Category('TypeScript')))
+
+  const newPostData: CreatePostDTO = {
+    author,
+    title: 'My First Post',
+    body: 'Hello World!',
+    excerpt: '',
+    categories,
+    ogImageUrl: 'http://example.com',
+  }
+
+  describe('Should not be able to create a post that', async () => {
+    test('Has non-existing author in the repo', async () => {
+      // deep copy newPostData
+      const postDataWrongAuthor = JSON.parse(JSON.stringify(newPostData))
+      postDataWrongAuthor.author = new Author('Not in the Repo', false)
+      const createPost = new CreatePost(inMemoryPostRepo, inMemoryCategoryRepository, inMemoryAuthorRepo)
+      expect(createPost.execute(postDataWrongAuthor)).rejects.toThrow(/author/)
+    })
+
+    test('Has non-existing category in the repo', async () => {
+      const postDataWrongCategory = JSON.parse(JSON.stringify(newPostData))
+      postDataWrongCategory.categories.push(new Category('Not in the repo'))
+      const createPost = new CreatePost(inMemoryPostRepo, inMemoryCategoryRepository, inMemoryAuthorRepo)
+      expect(createPost.execute(postDataWrongCategory)).rejects.toThrow(/category/)
+    })
+  })
+
   it('Should be able to create a Post', async () => {
-    const categories: Category[] = [
-      { id: '1', name: 'Node'},
-      { id: '2', name: 'Typescript'},
-    ]
-
-    const newPostData: CreatePostDTO = {
-      author,
-      title: 'My First Post',
-      body: 'Hello World!',
-      excerpt: '',
-      categories,
-      ogImageUrl: 'http://example.com',
-    }
-
-    const createPost = new CreatePost(inMemoryPostRepo, inMemoryAuthorRepo)
+    const createPost = new CreatePost(inMemoryPostRepo, inMemoryCategoryRepository, inMemoryAuthorRepo)
     const createdPost = await createPost.execute(newPostData)
     expect(createdPost.id).toBeTypeOf('string')
     expect(createdPost.slug).toBe('my-first-post')
