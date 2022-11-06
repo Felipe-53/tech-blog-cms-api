@@ -1,11 +1,13 @@
 import { CreatePostDTO } from "../../../dtos/CreatePostDTO";
 import { Post } from "../../../entities/Post";
 import { IAuthorRepository } from "../../../repositories/IAuthorRepository";
+import { ICategoryRepository } from "../../../repositories/ICategoryRepository";
 import { IPostRepository } from "../../../repositories/IPostRepository";
 
 export class CreatePost {
   constructor(
     private postRepository: IPostRepository,
+    private categoryRepository: ICategoryRepository,
     private authorRepository: IAuthorRepository
   ) {}
 
@@ -13,6 +15,13 @@ export class CreatePost {
     const authorId = data.author.id as string
     const author = await this.authorRepository.findById(authorId)
     if (!author) throw Error(`No such author with id ${authorId}`)
+    const existingCategories = await this.categoryRepository.findAll()
+    const existingCategoriesIds = existingCategories.map(cat => cat.id)
+    for (const cat of data.categories) {
+      if (!existingCategoriesIds.includes(cat.id)) {
+        throw Error(`Category with id ${cat.id} does not exist in category repository`)
+      }
+    }
     const post = new Post(data)
     await this.postRepository.create(post)
     return post
