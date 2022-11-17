@@ -13,6 +13,7 @@
     "vitest": "^0.24.3"
   },
   "dependencies": {
+    "fastify": "^4.10.0",
     "slugify": "^1.6.5"
   }
 }
