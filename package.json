@@ -13,6 +13,8 @@
     "vitest": "^0.24.3"
   },
   "dependencies": {
+    "@fastify/type-provider-typebox": "^2.3.0",
+    "@sinclair/typebox": "^0.25.9",
     "fastify": "^4.10.0",
     "slugify": "^1.6.5"
   }
