@@ -1,11 +1,10 @@
-import { Author } from "../Author/Author"
+import { Author } from "../Author"
 import { Category } from "../Category"
 
 export function PostFactory(props: {
-  uuid: () => string,
+  uuid: () => string
   slug: (title: string) => string
 }) {
-
   const { uuid, slug } = props
 
   class Post {
@@ -19,8 +18,8 @@ export function PostFactory(props: {
     ogImageUrl: string
     createdAt: Date
     updatedAt: Date
-  
-    constructor(props: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'slug'>) {
+
+    constructor(props: Omit<Post, "id" | "createdAt" | "updatedAt" | "slug">) {
       Object.assign(this, props)
       if (!this.id) this.id = uuid()
       if (!this.createdAt) this.createdAt = new Date()
