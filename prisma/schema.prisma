@@ -9,3 +9,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Author {
+  id String @id @default(uuid())
+  name String
+  admin Boolean
+  posts Post[]
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String
+  posts CategoriesToPosts[]
+}
+
+model Post {
+  id String @id @default(uuid())
+  title String
+  excerpt String
+  slug String
+  body String
+  authorId String
+  author Author @relation(fields: [authorId], references: [id])
+  categories CategoriesToPosts[] 
+}
+
+model CategoriesToPosts {
+  categoryId String
+  postId String
+  category Category @relation(fields: [categoryId], references: [id])
+  posts Post @relation(fields: [postId], references: [id])
+
+  @@id([categoryId, postId])
+}
