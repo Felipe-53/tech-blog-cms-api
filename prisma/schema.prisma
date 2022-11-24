@@ -10,35 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Author {
+model DBAuthor {
   id String @id @default(uuid())
   name String
   admin Boolean
-  posts Post[]
+  posts DBPost[]
 }
 
-model Category {
+model DBCategory {
   id String @id @default(uuid())
   name String
-  posts CategoriesToPosts[]
+  posts DBCategoriesToPosts[]
 }
 
-model Post {
+model DBPost {
   id String @id @default(uuid())
   title String
   excerpt String
   slug String
+  ogImageUrl String
   body String
   authorId String
-  author Author @relation(fields: [authorId], references: [id])
-  categories CategoriesToPosts[] 
+  author DBAuthor @relation(fields: [authorId], references: [id])
+  categories DBCategoriesToPosts[] 
 }
 
-model CategoriesToPosts {
+model DBCategoriesToPosts {
   categoryId String
   postId String
-  category Category @relation(fields: [categoryId], references: [id])
-  posts Post @relation(fields: [postId], references: [id])
+  category DBCategory @relation(fields: [categoryId], references: [id])
+  posts DBPost @relation(fields: [postId], references: [id])
 
   @@id([categoryId, postId])
 }
