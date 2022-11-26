@@ -53,6 +53,7 @@ export class PgPostRespository implements IPostRepository {
 
     const createdPost = await prisma.dBPost.create({
       data: {
+        id: post.id,
         body: post.body,
         title: post.title,
         excerpt: post.excerpt,

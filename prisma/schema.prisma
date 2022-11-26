@@ -11,20 +11,20 @@ datasource db {
 }
 
 model DBAuthor {
-  id String @id @default(uuid())
+  id String @id @db.Uuid
   name String
   admin Boolean
   posts DBPost[]
 }
 
 model DBCategory {
-  id String @id @default(uuid())
+  id String @id @db.Uuid
   name String
   posts DBCategoriesToPosts[]
 }
 
 model DBPost {
-  id String @id @default(uuid())
+  id String @id @db.Uuid
   title String
   excerpt String
   slug String
