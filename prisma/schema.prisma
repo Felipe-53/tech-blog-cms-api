@@ -30,6 +30,8 @@ model DBPost {
   slug String
   ogImageUrl String
   body String
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
   authorId String
   author DBAuthor @relation(fields: [authorId], references: [id])
   categories DBCategoriesToPosts[] 
