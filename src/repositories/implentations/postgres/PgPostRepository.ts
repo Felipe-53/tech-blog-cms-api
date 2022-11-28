@@ -23,6 +23,7 @@ type PrismaPostEntity = DBPost & {
 
 function prismaToPostEntity(prismaPost: PrismaPostEntity) {
   const postEntity = new Post({
+    id: prismaPost.id,
     author: prismaPost.author,
     body: prismaPost.body,
     excerpt: prismaPost.excerpt,
