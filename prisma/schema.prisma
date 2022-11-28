@@ -32,14 +32,14 @@ model DBPost {
   body String
   createdAt DateTime @default(now())
   updatedAt DateTime?
-  authorId String
+  authorId String @db.Uuid
   author DBAuthor @relation(fields: [authorId], references: [id])
   categories DBCategoriesToPosts[] 
 }
 
 model DBCategoriesToPosts {
-  categoryId String
-  postId String
+  categoryId String @db.Uuid
+  postId String @db.Uuid
   category DBCategory @relation(fields: [categoryId], references: [id])
   posts DBPost @relation(fields: [postId], references: [id])
 
