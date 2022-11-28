@@ -1,3 +1,4 @@
+import { MakeOptional } from "../../types/MakeOptinal"
 import { Author } from "../Author"
 import { Category } from "../Category"
 
@@ -17,13 +18,17 @@ export function PostFactory(props: {
     slug: string
     ogImageUrl: string
     createdAt: Date
-    updatedAt: Date
+    updatedAt: Date | null
 
-    constructor(props: Omit<Post, "id" | "createdAt" | "updatedAt" | "slug">) {
+    constructor(
+      props:
+        | Omit<Post, "id" | "createdAt" | "updatedAt" | "slug">
+        | MakeOptional<Post, "id">
+    ) {
       Object.assign(this, props)
       if (!this.id) this.id = uuid()
       if (!this.createdAt) this.createdAt = new Date()
-      if (!this.updatedAt) this.updatedAt = new Date()
+      if (!this.updatedAt) this.updatedAt = null
       if (!this.slug) this.slug = slug(this.title)
     }
 
