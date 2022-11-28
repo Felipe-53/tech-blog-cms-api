@@ -24,12 +24,8 @@ async function start() {
 
   app.register(routes)
 
-  app.listen(3500, (err, addr) => {
-    if (err) {
-      console.log(err)
-      process.exit(1)
-    }
-    console.log("listening on addr: ", addr)
+  app.listen({
+    port: 3500,
   })
 }
 
