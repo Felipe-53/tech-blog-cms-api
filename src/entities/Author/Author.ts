@@ -3,9 +3,7 @@ export function AuthorFactory({ uuid }: { uuid: () => string }) {
     readonly id: string
 
     constructor(public name: string, public admin: boolean, id?: string) {
-      if (!id) {
-        this.id = uuid()
-      }
+      this.id = id || uuid()
     }
   }
 
