@@ -1,8 +1,10 @@
-import { CreatePostDTO } from "../../../dtos/CreatePostDTO";
-import { Post } from "../../../entities/Post";
-import { IAuthorRepository } from "../../../repositories/IAuthorRepository";
-import { ICategoryRepository } from "../../../repositories/ICategoryRepository";
-import { IPostRepository } from "../../../repositories/IPostRepository";
+import { CreatePostDTO } from "../../../dtos/CreatePostDTO"
+import { Post } from "../../../entities/Post"
+import { IAuthorRepository } from "../../../repositories/IAuthorRepository"
+import { ICategoryRepository } from "../../../repositories/ICategoryRepository"
+import { IPostRepository } from "../../../repositories/IPostRepository"
+
+export class InconsistentData extends Error {}
 
 export class CreatePost {
   constructor(
@@ -14,12 +16,15 @@ export class CreatePost {
   async execute(data: CreatePostDTO) {
     const authorId = data.author.id as string
     const author = await this.authorRepository.findById(authorId)
-    if (!author) throw Error(`No such author with id ${authorId}`)
+    if (!author)
+      throw new InconsistentData(`No such author with id ${authorId}`)
     const existingCategories = await this.categoryRepository.findAll()
-    const existingCategoriesIds = existingCategories.map(cat => cat.id)
+    const existingCategoriesIds = existingCategories.map((cat) => cat.id)
     for (const cat of data.categories) {
       if (!existingCategoriesIds.includes(cat.id)) {
-        throw Error(`Category with id ${cat.id} does not exist in category repository`)
+        throw new InconsistentData(
+          `Category with id ${cat.id} does not exist in category repository`
+        )
       }
     }
     const post = new Post(data)
