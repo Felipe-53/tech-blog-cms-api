@@ -1,15 +1,22 @@
 import { Author } from "../../../entities/Author"
-import { IAuthorRepository } from "../../IAuthorRepository"
+import { CreateAuthorData, IAuthorRepository } from "../../IAuthorRepository"
 import { prisma } from "../postgres"
-
+import bcrypt from "bcrypt"
 export class PgAuthorRepository implements IAuthorRepository {
-  async create(authorData: Omit<Author, "id">) {
-    const author = new Author(authorData.name, authorData.admin)
+  async create(authorData: CreateAuthorData) {
+    const author = new Author(
+      authorData.name,
+      authorData.email,
+      authorData.admin
+    )
+
     await prisma.dBAuthor.create({
       data: {
         id: author.id,
         name: author.name,
         admin: author.admin,
+        email: author.email,
+        passwordHash: await bcrypt.hash(authorData.password, 10),
       },
     })
     return author
@@ -22,6 +29,6 @@ export class PgAuthorRepository implements IAuthorRepository {
       },
     })
     if (!author) return null
-    return new Author(author.name, author.admin, author.id)
+    return new Author(author.name, author.email, author.admin, author.id)
   }
 }

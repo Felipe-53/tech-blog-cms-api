@@ -1,5 +1,13 @@
-import { Author } from '../entities/Author/'
+import { Author } from "../entities/Author/"
+
+export interface CreateAuthorData {
+  name: string
+  email: string
+  password: string
+  admin: boolean
+}
+
 export interface IAuthorRepository {
-  create: (author: Omit<Author, 'id'>) => Promise<Author>
+  create: (author: CreateAuthorData) => Promise<Author>
   findById: (id: string) => Promise<Author | null>
 }
