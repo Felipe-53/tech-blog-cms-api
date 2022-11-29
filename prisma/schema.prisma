@@ -12,6 +12,8 @@ datasource db {
 
 model DBAuthor {
   id String @id @db.Uuid
+  email String
+  passwordHash String
   name String
   admin Boolean
   posts DBPost[]
