@@ -4,13 +4,9 @@ import { CreatePost } from "../use-cases/Post/CreatePost/CreatePost"
 import { PgPostRespository } from "../repositories/implentations/postgres/PgPostRepository"
 import { PgCategoryRespository } from "../repositories/implentations/postgres/PgCategoryRepository"
 import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
+import { Author } from "../entities/Author"
 
 const createPostData = Type.Object({
-  author: Type.Object({
-    id: Type.String(),
-    name: Type.String(),
-    admin: Type.Boolean(),
-  }),
   body: Type.String(),
   title: Type.String(),
   excerpt: Type.String(),
@@ -34,7 +30,8 @@ async function createPostHandler(
 
   const createPost = new CreatePost(postRepo, categoryRepo, authorRepo)
 
-  const { title, body, author, categories, excerpt, ogImageUrl } = req.body
+  const author = req.user as Author
+  const { title, body, categories, excerpt, ogImageUrl } = req.body
 
   const post = await createPost.execute({
     author,
@@ -44,6 +41,8 @@ async function createPostHandler(
     body,
     title,
   })
+
+  return post
 }
 
 export { createPostHandler, createPostData }
