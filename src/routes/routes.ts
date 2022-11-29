@@ -10,6 +10,15 @@ import { Unauthorized } from "../errors/Unauthorized"
 import bcrypt from "bcrypt"
 import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
 import { Author } from "../entities/Author"
+import {
+  createCategoryData,
+  createCategoryHandler,
+} from "../controllers/createCategoryHandler"
+import { getCategoryHandler } from "../controllers/getCateoryHandler"
+import {
+  getPostHandler,
+  getPostQueryParams,
+} from "../controllers/getPostHandler"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.register(fastifyJwt, {
@@ -97,9 +106,9 @@ export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
 
   app.addHook("onRequest", async (req, reply) => {
     try {
-      req.jwtVerify()
+      await req.jwtVerify()
     } catch (err) {
-      return reply.send(err)
+      throw new Unauthorized("Token malformed or abscent")
     }
   })
 
@@ -110,5 +119,29 @@ export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
       body: createPostData,
     },
     handler: createPostHandler,
+  })
+
+  app.route({
+    url: "/post",
+    method: "GET",
+    schema: {
+      querystring: getPostQueryParams,
+    },
+    handler: getPostHandler,
+  })
+
+  app.route({
+    url: "/category",
+    method: "POST",
+    schema: {
+      body: createCategoryData,
+    },
+    handler: createCategoryHandler,
+  })
+
+  app.route({
+    url: "/category",
+    method: "GET",
+    handler: getCategoryHandler,
   })
 }
