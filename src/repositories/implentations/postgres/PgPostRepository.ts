@@ -7,6 +7,7 @@ import {
 import { Post } from "../../../entities/Post"
 import { IPostRepository } from "../../IPostRepository"
 import { prisma } from "."
+import { Author } from "../../../entities/Author"
 
 const include = {
   author: true,
@@ -24,7 +25,12 @@ type PrismaPostEntity = DBPost & {
 function prismaToPostEntity(prismaPost: PrismaPostEntity) {
   const postEntity = new Post({
     id: prismaPost.id,
-    author: prismaPost.author,
+    author: {
+      id: prismaPost.author.id,
+      name: prismaPost.author.name,
+      email: prismaPost.author.email,
+      admin: prismaPost.author.admin,
+    },
     body: prismaPost.body,
     excerpt: prismaPost.excerpt,
     ogImageUrl: prismaPost.ogImageUrl,
