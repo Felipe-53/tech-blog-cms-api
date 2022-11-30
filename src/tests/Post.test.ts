@@ -78,7 +78,7 @@ describe("Post CRUD", async () => {
     expect(createdPost.id).toBeTypeOf("string")
     expect(createdPost.slug).toBe("my-first-post")
     expect(createdPost.createdAt).toBeInstanceOf(Date)
-    expect(createdPost.updatedAt).toBeInstanceOf(Date)
+    expect(createdPost.updatedAt).toBeNull()
   })
 
   it("Should be found within the repository", async () => {
