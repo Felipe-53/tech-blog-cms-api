@@ -21,7 +21,10 @@ export function PostFactory(props: {
     updatedAt: Date | null
 
     constructor(
-      props: MakeOptional<Post, "id" | "createdAt" | "updatedAt" | "slug">
+      props: MakeOptional<
+        Post,
+        "id" | "createdAt" | "updatedAt" | "slug" | "toJSON"
+      >
     ) {
       this.id = props.id || uuid()
       this.body = props.body
@@ -51,6 +54,21 @@ export function PostFactory(props: {
 
     get title() {
       return this._title
+    }
+
+    toJSON() {
+      return {
+        id: this.id,
+        title: this._title,
+        body: this._body,
+        author: this.author,
+        excerpt: this.excerpt,
+        categories: this.categories,
+        slug: this.slug,
+        ogImageUrl: this.ogImageUrl,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt,
+      }
     }
   }
 

@@ -1,3 +1,6 @@
-import { Post } from "../entities/Post";
+import { Post } from "../entities/Post"
 
-export type CreatePostDTO = Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'slug'>
+export type CreatePostDTO = Omit<
+  Post,
+  "id" | "createdAt" | "updatedAt" | "slug" | "toJSON"
+>
