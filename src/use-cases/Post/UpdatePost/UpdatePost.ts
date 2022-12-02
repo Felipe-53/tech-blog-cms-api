@@ -1,6 +1,6 @@
-import { Category } from "../../../entities/Category";
-import { Post } from "../../../entities/Post";
-import { IPostRepository } from "../../../repositories/IPostRepository";
+import { Category } from "../../../entities/Category"
+import { Post } from "../../../entities/Post"
+import { IPostRepository } from "../../../repositories/IPostRepository"
 
 export interface UpdatePostData {
   title?: string
@@ -11,14 +11,11 @@ export interface UpdatePostData {
 }
 
 export class UpdatePost {
-  constructor(
-    private postRepository: IPostRepository
-  ) {}
+  constructor(private postRepository: IPostRepository) {}
 
   async execute(id: string, data: UpdatePostData): Promise<Post> {
-    const origialPostData = await this.postRepository.findById(id)
-    if (!origialPostData) throw Error(`Post with id ${id} not found`)
-    const post = new Post(origialPostData)
+    const post = await this.postRepository.findById(id)
+    if (!post) throw Error(`Post with id ${id} not found`)
     for (const prop of Object.keys(data)) {
       post[prop] = data[prop]
     }
