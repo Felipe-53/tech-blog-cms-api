@@ -43,7 +43,7 @@ model DBCategoriesToPosts {
   categoryId String @db.Uuid
   postId String @db.Uuid
   category DBCategory @relation(fields: [categoryId], references: [id])
-  posts DBPost @relation(fields: [postId], references: [id])
+  post DBPost @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@id([categoryId, postId])
 }
