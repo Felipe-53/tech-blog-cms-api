@@ -25,16 +25,19 @@ type PrismaPostEntity = DBPost & {
 function prismaToPostEntity(prismaPost: PrismaPostEntity) {
   const postEntity = new Post({
     id: prismaPost.id,
+    createdAt: prismaPost.createdAt,
+    updatedAt: prismaPost.updatedAt,
+    title: prismaPost.title,
+    body: prismaPost.body,
+    slug: prismaPost.slug,
+    excerpt: prismaPost.excerpt,
     author: {
       id: prismaPost.author.id,
       name: prismaPost.author.name,
       email: prismaPost.author.email,
       admin: prismaPost.author.admin,
     },
-    body: prismaPost.body,
-    excerpt: prismaPost.excerpt,
     ogImageUrl: prismaPost.ogImageUrl,
-    title: prismaPost.title,
     categories: prismaPost.categories.map((cat) => {
       return {
         id: cat.categoryId,
