@@ -4,6 +4,7 @@
   "description": "Create, read, update and delete posts.",
   "main": "index.js",
   "scripts": {
+    "test": "vitest --watch",
     "dev": "ts-node-dev src/app.ts"
   },
   "keywords": [],
