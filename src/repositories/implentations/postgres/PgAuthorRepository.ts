@@ -31,4 +31,12 @@ export class PgAuthorRepository implements IAuthorRepository {
     if (!author) return null
     return new Author(author.name, author.email, author.admin, author.id)
   }
+
+  async delete(id: string) {
+    await prisma.dBAuthor.delete({
+      where: {
+        id,
+      },
+    })
+  }
 }
