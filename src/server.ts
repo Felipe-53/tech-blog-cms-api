@@ -2,9 +2,9 @@ import fastify from "fastify"
 import { openRoutes, authenticatedRoutes } from "./routes/routes"
 import { HTTPError } from "./errors/HTTPError"
 
-function buildServer() {
+function buildServer({ logger } = { logger: false }) {
   const server = fastify({
-    logger: true,
+    logger,
   })
 
   server.setErrorHandler(async (error, req, reply) => {
