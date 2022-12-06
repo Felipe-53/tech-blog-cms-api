@@ -21,10 +21,6 @@ import {
 } from "../controllers/getPostHandler"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
-  app.register(fastifyJwt, {
-    secret: process.env.SECRET_KEY!,
-  })
-
   const loginBody = Type.Object({
     email: Type.String(),
     password: Type.String(),
