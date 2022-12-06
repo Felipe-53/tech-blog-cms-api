@@ -75,11 +75,21 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
     }
   )
 
-  app.post<{ Body: CreateAuthorBody }>(
+  type CreateAuthorHeaders = {
+    "X-Secret-Key": string
+  }
+
+  app.post<{ Body: CreateAuthorBody; Headers: CreateAuthorHeaders }>(
     "/author",
     {
       schema: {
         body: createAuthorBody,
+      },
+      onRequest: async (req) => {
+        const key = req.headers["X-Secret-Key"]
+        if (key !== process.env.SECRET_KEY) {
+          throw new Unauthorized()
+        }
       },
     },
     async (req) => {
