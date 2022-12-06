@@ -19,10 +19,12 @@ async function start() {
 
   const app = buildServer()
 
-  await app.listen({
+  const addr = await app.listen({
     port: 3500,
     host: "0.0.0.0",
   })
+
+  console.log(`Listing on ${addr}`)
 }
 
 start().catch((err) => {
