@@ -76,7 +76,7 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
   )
 
   type CreateAuthorHeaders = {
-    "X-Secret-Key": string
+    "x-secret-key": string
   }
 
   app.post<{ Body: CreateAuthorBody; Headers: CreateAuthorHeaders }>(
@@ -86,13 +86,13 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
         body: createAuthorBody,
       },
       onRequest: async (req) => {
-        const key = req.headers["X-Secret-Key"]
+        const key = req.headers["x-secret-key"]
         if (key !== process.env.SECRET_KEY) {
           throw new Unauthorized()
         }
       },
     },
-    async (req) => {
+    async (req, reply) => {
       const { name, email, admin, password } = req.body
 
       const authorRepo = new PgAuthorRepository()
@@ -103,6 +103,8 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
         admin,
         password,
       })
+
+      reply.status(201)
 
       return author
     }
