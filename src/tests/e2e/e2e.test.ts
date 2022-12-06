@@ -9,6 +9,7 @@ import { Author } from "../../entities/Author"
 import { Category } from "../../entities/Category"
 import { config as loadEnv } from "dotenv"
 import { FastifyInstance } from "fastify"
+import { faker } from "@faker-js/faker"
 
 const result = loadEnv()
 if (result.error) {
@@ -86,4 +87,38 @@ test("Should be able to login with correct credentials", async () => {
   })
   expect(response.statusCode).toBe(200)
   expect(response.json().token).toBeTypeOf("string")
+})
+
+test("Should not be able to create an author without credentials", async () => {
+  const response = await server.inject({
+    path: "/author",
+    method: "POST",
+    payload: {
+      email: faker.internet.email(),
+      name: faker.name.fullName(),
+      password: faker.internet.password(),
+      admin: true,
+    },
+  })
+  expect(response.statusCode).toBe(401)
+})
+
+test("Should be able to create an author providing correct credentials", async () => {
+  const payload = {
+    email: faker.internet.email(),
+    name: faker.name.fullName(),
+    password: faker.internet.password(),
+    admin: true,
+  }
+
+  const response = await server.inject({
+    path: "/author",
+    method: "POST",
+    headers: {
+      "X-Secret-Key": process.env.SECRET_KEY,
+    },
+    payload,
+  })
+  expect(response.statusCode).toBe(201)
+  expect(response.json().id).toBeTypeOf("string")
 })
