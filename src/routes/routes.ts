@@ -3,7 +3,6 @@ import {
   createPostData,
   createPostHandler,
 } from "../controllers/createPostHandler"
-import fastifyJwt from "@fastify/jwt"
 import { Static, Type } from "@sinclair/typebox"
 import { prisma } from "../repositories/implentations/postgres"
 import { Unauthorized } from "../errors/Unauthorized"
@@ -22,10 +21,6 @@ import {
 import env from "../env"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
-  app.register(fastifyJwt, {
-    secret: env.secret_key,
-  })
-
   const loginBody = Type.Object({
     email: Type.String(),
     password: Type.String(),
@@ -113,11 +108,7 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
 }
 
 export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
-  app.register(fastifyJwt, {
-    secret: env.secret_key,
-  })
-
-  app.addHook("onRequest", async (req, reply) => {
+  app.addHook("onRequest", async (req) => {
     try {
       await req.jwtVerify()
     } catch (err) {
