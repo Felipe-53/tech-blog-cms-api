@@ -30,7 +30,7 @@ async function eraseDbData() {
 }
 
 beforeAll(async () => {
-  const nodeEnv = env.secret_key
+  const nodeEnv = env.node_env
   assert(
     nodeEnv === "test",
     `Trying to run tests in non-testing environment: '${nodeEnv}'`
