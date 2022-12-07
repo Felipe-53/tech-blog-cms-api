@@ -19,6 +19,12 @@ export class InMemoryAuthorRepository implements IAuthorRepository {
     return author
   }
 
+  async findByEmail(email: string) {
+    const author = data.authors.find((author) => author.email === email)
+    if (!author) return null
+    return author
+  }
+
   async delete(id: string) {
     data.authors = data.authors.filter((author) => {
       return author.id !== id

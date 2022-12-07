@@ -32,6 +32,16 @@ export class PgAuthorRepository implements IAuthorRepository {
     return new Author(author.name, author.email, author.admin, author.id)
   }
 
+  async findByEmail(email: string) {
+    const author = await prisma.dBAuthor.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    return author
+  }
+
   async delete(id: string) {
     await prisma.dBAuthor.delete({
       where: {

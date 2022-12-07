@@ -10,5 +10,6 @@ export interface CreateAuthorData {
 export interface IAuthorRepository {
   create: (author: CreateAuthorData) => Promise<Author>
   findById: (id: string) => Promise<Author | null>
+  findByEmail: (email: string) => Promise<Author | null>
   delete: (id: string) => Promise<void>
 }
