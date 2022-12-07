@@ -12,4 +12,14 @@ const env = {
   node_env: process.env.NODE_ENV! as string,
 }
 
+assertDefinedKeys(env)
+
+function assertDefinedKeys(env: { [key: string]: string }) {
+  for (const key of Object.keys(env)) {
+    if (!env[key]) {
+      throw Error(`Expected environment varibale ${key} to be defined`)
+    }
+  }
+}
+
 export default env
