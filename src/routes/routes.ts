@@ -19,10 +19,11 @@ import {
   getPostHandler,
   getPostQueryParams,
 } from "../controllers/getPostHandler"
+import env from "../env"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.register(fastifyJwt, {
-    secret: process.env.SECRET_KEY!,
+    secret: env.secret_key,
   })
 
   const loginBody = Type.Object({
@@ -87,7 +88,7 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
       },
       onRequest: async (req) => {
         const key = req.headers["x-secret-key"]
-        if (key !== process.env.SECRET_KEY) {
+        if (key !== env.secret_key) {
           throw new Unauthorized()
         }
       },
@@ -113,7 +114,7 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
 
 export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
   app.register(fastifyJwt, {
-    secret: process.env.SECRET_KEY!,
+    secret: env.secret_key,
   })
 
   app.addHook("onRequest", async (req, reply) => {

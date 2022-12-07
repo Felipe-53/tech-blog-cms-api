@@ -10,6 +10,7 @@ import { Category } from "../../entities/Category"
 import { config as loadEnv } from "dotenv"
 import { FastifyInstance } from "fastify"
 import { faker } from "@faker-js/faker"
+import env from "../../env"
 
 const result = loadEnv()
 if (result.error) {
@@ -29,7 +30,7 @@ async function eraseDbData() {
 }
 
 beforeAll(async () => {
-  const nodeEnv = process.env.NODE_ENV
+  const nodeEnv = env.secret_key
   assert(
     nodeEnv === "test",
     `Trying to run tests in non-testing environment: '${nodeEnv}'`
@@ -115,7 +116,7 @@ test("Should be able to create an author providing correct credentials", async (
     path: "/author",
     method: "POST",
     headers: {
-      "X-Secret-Key": process.env.SECRET_KEY,
+      "X-Secret-Key": env.secret_key,
     },
     payload,
   })
