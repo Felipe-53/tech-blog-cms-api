@@ -4,11 +4,8 @@ import {
   createPostHandler,
 } from "../controllers/createPostHandler"
 import { Static, Type } from "@sinclair/typebox"
-import { prisma } from "../repositories/implentations/postgres"
 import { Unauthorized } from "../errors/Unauthorized"
-import bcrypt from "bcrypt"
 import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
-import { Author } from "../entities/Author"
 import {
   createCategoryData,
   createCategoryHandler,
@@ -19,13 +16,9 @@ import {
   getPostQueryParams,
 } from "../controllers/getPostHandler"
 import env from "../env"
+import { loginBodyData, loginHandler } from "../controllers/loginHandler"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
-  const loginBody = Type.Object({
-    email: Type.String(),
-    password: Type.String(),
-  })
-
   const createAuthorBody = Type.Object({
     name: Type.String(),
     email: Type.String(),
@@ -35,41 +28,14 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
 
   type CreateAuthorBody = Static<typeof createAuthorBody>
 
-  type LoginBody = Static<typeof loginBody>
-
-  app.post<{ Body: LoginBody }>(
-    "/login",
-    {
-      schema: {
-        body: loginBody,
-      },
+  app.route({
+    url: "/login",
+    method: "POST",
+    schema: {
+      body: loginBodyData,
     },
-    async (req) => {
-      const { email, password } = req.body
-
-      const user = await prisma.dBAuthor.findUnique({
-        where: {
-          email,
-        },
-      })
-
-      if (!user) throw new Unauthorized("Not authenticated")
-
-      const match = await bcrypt.compare(password, user.passwordHash)
-      if (!match) throw new Unauthorized("Not authenticated")
-
-      const tokenPayload = new Author(
-        user.name,
-        user.email,
-        user.admin,
-        user.id
-      )
-
-      const token = app.jwt.sign(tokenPayload)
-
-      return { token }
-    }
-  )
+    handler: loginHandler,
+  })
 
   type CreateAuthorHeaders = {
     "x-secret-key": string
