@@ -1,8 +1,14 @@
 import fastify from "fastify"
 import { openRoutes, authenticatedRoutes } from "./routes/routes"
 import { HTTPError } from "./errors/HTTPError"
-import fastifyJwt from "@fastify/jwt"
+import fastifyJwt, { JWT } from "@fastify/jwt"
 import env from "./env"
+
+declare module "fastify" {
+  interface FastifyRequest {
+    jwt: JWT
+  }
+}
 
 function buildServer({ logger } = { logger: false }) {
   const server = fastify({
@@ -29,6 +35,10 @@ function buildServer({ logger } = { logger: false }) {
   server.register(fastifyJwt, { secret: env.secret_key })
   server.register(openRoutes)
   server.register(authenticatedRoutes)
+
+  server.addHook("preHandler", async (request) => {
+    request.jwt = server.jwt
+  })
 
   return server
 }
