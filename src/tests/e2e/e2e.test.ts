@@ -7,15 +7,8 @@ import { CreateCategory } from "../../use-cases/Category/CreateCategory/CreateCa
 import { PgCategoryRespository } from "../../repositories/implentations/postgres/PgCategoryRepository"
 import { Author } from "../../entities/Author"
 import { Category } from "../../entities/Category"
-import { config as loadEnv } from "dotenv"
 import { faker } from "@faker-js/faker"
 import env from "../../env"
-
-const result = loadEnv()
-if (result.error) {
-  console.error(result.error)
-  process.exit(1)
-}
 
 let server = buildServer()
 let seedAuthor: Author
