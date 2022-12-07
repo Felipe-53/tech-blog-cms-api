@@ -8,7 +8,6 @@ import { PgCategoryRespository } from "../../repositories/implentations/postgres
 import { Author } from "../../entities/Author"
 import { Category } from "../../entities/Category"
 import { config as loadEnv } from "dotenv"
-import { FastifyInstance } from "fastify"
 import { faker } from "@faker-js/faker"
 import env from "../../env"
 
@@ -18,7 +17,7 @@ if (result.error) {
   process.exit(1)
 }
 
-let server: FastifyInstance
+let server = buildServer()
 let seedAuthor: Author
 let seedCategory: Category
 
@@ -39,6 +38,7 @@ beforeAll(async () => {
   execSync("npx prisma db push")
 
   await eraseDbData()
+  await server.close()
 })
 
 beforeEach(async () => {
@@ -86,8 +86,17 @@ test("Should be able to login with correct credentials", async () => {
       password: "secret",
     },
   })
+
   expect(response.statusCode).toBe(200)
-  expect(response.json().token).toBeTypeOf("string")
+
+  const verifiedPayload = server.jwt.verify<Author & { iat: number }>(
+    response.json().token
+  )
+
+  expect(verifiedPayload.email).toBe(seedAuthor.email)
+  expect(verifiedPayload.name).toBe(seedAuthor.name)
+  expect(verifiedPayload.admin).toBe(seedAuthor.admin)
+  expect(verifiedPayload.id).toBe(seedAuthor.id)
 })
 
 test("Should not be able to create an author without credentials", async () => {
