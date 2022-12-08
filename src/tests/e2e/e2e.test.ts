@@ -9,6 +9,8 @@ import { Author } from "../../entities/Author"
 import { Category } from "../../entities/Category"
 import { faker } from "@faker-js/faker"
 import env from "../../env"
+import { CreateAuthor } from "../../use-cases/Author/CreateAuthor/CreateAuthor"
+import bcrypt from "bcrypt"
 
 let server = buildServer()
 let seedAuthor: Author
@@ -39,10 +41,15 @@ beforeEach(async () => {
   const categoryRepo = new PgCategoryRespository()
   const createCategory = new CreateCategory(categoryRepo)
 
-  seedAuthor = await authorRepo.create({
+  const createAuthor = new CreateAuthor(authorRepo, {
+    hash: (password: string) => bcrypt.hash(password, 10),
+    compare: bcrypt.compare,
+  })
+
+  seedAuthor = await createAuthor.execute({
     name: "Felipe",
     email: "felipe@email.com",
-    passwordHash: "secret",
+    password: "secret",
     admin: true,
   })
 
