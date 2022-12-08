@@ -33,7 +33,7 @@ beforeAll(async () => {
   author = await authorRepository.create({
     name: "Felipe",
     email: "felipeandresb97@gmail.com",
-    password: "secret",
+    passwordHash: "secret",
     admin: true,
   })
 
