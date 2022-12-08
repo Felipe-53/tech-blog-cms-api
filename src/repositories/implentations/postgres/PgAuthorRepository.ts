@@ -1,7 +1,6 @@
 import { Author } from "../../../entities/Author"
 import { CreateAuthorData, IAuthorRepository } from "../../IAuthorRepository"
 import { prisma } from "../postgres"
-import bcrypt from "bcrypt"
 export class PgAuthorRepository implements IAuthorRepository {
   async create(authorData: CreateAuthorData) {
     const author = new Author(
@@ -16,7 +15,7 @@ export class PgAuthorRepository implements IAuthorRepository {
         name: author.name,
         admin: author.admin,
         email: author.email,
-        passwordHash: await bcrypt.hash(authorData.password, 10),
+        passwordHash: authorData.passwordHash,
       },
     })
     return author
