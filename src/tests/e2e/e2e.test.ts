@@ -42,7 +42,7 @@ beforeEach(async () => {
   seedAuthor = await authorRepo.create({
     name: "Felipe",
     email: "felipe@email.com",
-    password: "secret",
+    passwordHash: "secret",
     admin: true,
   })
 
