@@ -3,9 +3,7 @@ import {
   createPostData,
   createPostHandler,
 } from "../controllers/createPostHandler"
-import { Static, Type } from "@sinclair/typebox"
 import { Unauthorized } from "../errors/Unauthorized"
-import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
 import {
   createCategoryData,
   createCategoryHandler,
@@ -15,19 +13,14 @@ import {
   getPostHandler,
   getPostQueryParams,
 } from "../controllers/getPostHandler"
-import env from "../env"
 import { loginBodyData, loginHandler } from "../controllers/loginHandler"
+import {
+  createAuthorBody,
+  createAuthorHandler,
+  createAuthorOnRequestHook,
+} from "../controllers/createAuthorHandler"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
-  const createAuthorBody = Type.Object({
-    name: Type.String(),
-    email: Type.String(),
-    password: Type.String(),
-    admin: Type.Boolean(),
-  })
-
-  type CreateAuthorBody = Static<typeof createAuthorBody>
-
   app.route({
     url: "/login",
     method: "POST",
@@ -37,40 +30,15 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
     handler: loginHandler,
   })
 
-  type CreateAuthorHeaders = {
-    "x-secret-key": string
-  }
-
-  app.post<{ Body: CreateAuthorBody; Headers: CreateAuthorHeaders }>(
-    "/author",
-    {
-      schema: {
-        body: createAuthorBody,
-      },
-      onRequest: async (req) => {
-        const key = req.headers["x-secret-key"]
-        if (key !== env.secret_key) {
-          throw new Unauthorized()
-        }
-      },
+  app.route({
+    url: "/author",
+    method: "POST",
+    schema: {
+      body: createAuthorBody,
     },
-    async (req, reply) => {
-      const { name, email, admin, password } = req.body
-
-      const authorRepo = new PgAuthorRepository()
-
-      const author = await authorRepo.create({
-        name,
-        email,
-        admin,
-        password,
-      })
-
-      reply.status(201)
-
-      return author
-    }
-  )
+    onRequest: createAuthorOnRequestHook,
+    handler: createAuthorHandler,
+  })
 }
 
 export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
