@@ -4,7 +4,7 @@ import { Type, Static } from "@sinclair/typebox"
 import { Unauthorized } from "../errors/Unauthorized"
 import env from "../env"
 import bcrypt from "bcrypt"
-import { CreateAuthor } from "../use-cases/Author/CreateAuthor/CreateAuthor"
+import { CreateAuthor } from "../use-cases/Author/CreateAuthor"
 
 const createAuthorBody = Type.Object({
   name: Type.String(),
@@ -23,10 +23,7 @@ async function createAuthorHandler(
 
   const authorRepository = new PgAuthorRepository()
 
-  const createAuthor = new CreateAuthor(authorRepository, {
-    hash: (password: string) => bcrypt.hash(password, 10),
-    compare: bcrypt.compare,
-  })
+  const createAuthor = new CreateAuthor(authorRepository)
 
   const author = await createAuthor.execute({
     name,
