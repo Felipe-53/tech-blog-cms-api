@@ -1,3 +1,4 @@
+import { DBAuthor } from "@prisma/client"
 import { Author } from "../../../entities/Author"
 import { IAuthorRepository } from "../../IAuthorRepository"
 import data from "./inMemoryData"
@@ -22,7 +23,7 @@ export class InMemoryAuthorRepository implements IAuthorRepository {
   async findByEmail(email: string) {
     const author = data.authors.find((author) => author.email === email)
     if (!author) return null
-    return author
+    return author as DBAuthor // TODO: fix this
   }
 
   async delete(id: string) {
