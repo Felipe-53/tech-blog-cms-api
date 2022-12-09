@@ -16,8 +16,11 @@ export class UpdatePost {
   async execute(id: string, data: UpdatePostData): Promise<Post> {
     const post = await this.postRepository.findById(id)
     if (!post) throw Error(`Post with id ${id} not found`)
-    for (const prop of Object.keys(data)) {
-      post[prop] = data[prop]
+    for (const prop of Object.keys(data) as Array<keyof UpdatePostData>) {
+      if (data[prop]) {
+        // @ts-ignore
+        post[prop] = data[prop]
+      }
     }
     this.postRepository.update(id, post)
     return post
