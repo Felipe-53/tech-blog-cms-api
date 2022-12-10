@@ -5,8 +5,8 @@ const databaseUrl = env.database_url
 const testDatabaseName = "testing"
 
 if (env.node_env === "test" && !databaseUrl.includes("testing")) {
-  console.error(
-    `Trying to run tests in a database not called ${testDatabaseName}`
+  process.stderr.write(
+    `Trying to run tests in a database not called '${testDatabaseName}'\n`
   )
   process.exit(1)
 }
