@@ -1,6 +1,4 @@
-FROM node:16
-
-WORKDIR /app
+FROM public.ecr.aws/lambda/nodejs:18
 
 COPY package*.json ./
 
@@ -10,6 +8,8 @@ COPY . .
 
 RUN npx prisma generate
 
-EXPOSE 3000
+RUN npm run build
 
-CMD [ "npm", "start" ]
+RUN cp -R ./build/* ./
+
+CMD [ "lambda-handler.handler" ]
