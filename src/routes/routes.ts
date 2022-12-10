@@ -22,6 +22,15 @@ import { simpleAuthHook } from "../hooks/simpleAuthHook"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.route({
+    url: "/healthcheck",
+    method: "GET",
+    onRequest: simpleAuthHook,
+    handler: async () => {
+      return { ok: true }
+    },
+  })
+
+  app.route({
     url: "/login",
     method: "POST",
     schema: {
