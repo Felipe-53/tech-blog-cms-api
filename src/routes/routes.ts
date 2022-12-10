@@ -17,8 +17,8 @@ import { loginBodyData, loginHandler } from "../controllers/loginHandler"
 import {
   createAuthorBody,
   createAuthorHandler,
-  createAuthorOnRequestHook,
 } from "../controllers/createAuthorHandler"
+import { simpleAuthHook } from "../hooks/simpleAuthHook"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.route({
@@ -36,7 +36,7 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
     schema: {
       body: createAuthorBody,
     },
-    onRequest: createAuthorOnRequestHook,
+    onRequest: simpleAuthHook,
     handler: createAuthorHandler,
   })
 }

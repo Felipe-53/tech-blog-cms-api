@@ -37,11 +37,4 @@ async function createAuthorHandler(
   return author
 }
 
-async function createAuthorOnRequestHook(req: FastifyRequest) {
-  const key = req.headers["x-secret-key"]
-  if (key !== env.secret_key) {
-    throw new Unauthorized()
-  }
-}
-
-export { createAuthorHandler, createAuthorBody, createAuthorOnRequestHook }
+export { createAuthorHandler, createAuthorBody }
