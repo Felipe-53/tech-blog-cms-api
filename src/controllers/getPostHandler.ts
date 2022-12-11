@@ -24,7 +24,7 @@ async function getPostHandler(
     const findPostBySlug = new FindPostBySlug(postRepo)
     // TODO: add authorId to the search
     const post = await findPostBySlug.execute(slug)
-    if (post) return { post }
+    if (post) return post
   }
 
   const findAllPosts = new FindAllPosts(postRepo)
