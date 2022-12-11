@@ -21,7 +21,7 @@ model DBAuthor {
 
 model DBCategory {
   id String @id @db.Uuid
-  name String
+  name String @unique
   posts DBCategoriesToPosts[]
 }
 
@@ -29,7 +29,7 @@ model DBPost {
   id String @id @db.Uuid
   title String
   excerpt String
-  slug String
+  slug String @unique
   ogImageUrl String
   body String
   createdAt DateTime @default(now())
