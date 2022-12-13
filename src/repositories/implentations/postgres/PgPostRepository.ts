@@ -7,7 +7,6 @@ import {
 import { Post } from "../../../entities/Post"
 import { IPostRepository } from "../../IPostRepository"
 import { prisma } from "."
-import { Author } from "../../../entities/Author"
 
 const include = {
   author: true,
@@ -70,6 +69,7 @@ export class PgPostRespository implements IPostRepository {
         slug: post.slug,
         ogImageUrl: post.ogImageUrl,
         authorId: post.author.id,
+        createdAt: post.createdAt,
         updatedAt: null,
         categories: {
           create: [...cats],
