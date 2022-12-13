@@ -1,4 +1,4 @@
-import { FastifyRequest } from "fastify"
+import { FastifyReply, FastifyRequest } from "fastify"
 import { Type, Static } from "@sinclair/typebox"
 import {
   CreatePost,
@@ -27,7 +27,8 @@ const createPostData = Type.Object({
 type CreatePostDataType = Static<typeof createPostData>
 
 async function createPostHandler(
-  req: FastifyRequest<{ Body: CreatePostDataType }>
+  req: FastifyRequest<{ Body: CreatePostDataType }>,
+  reply: FastifyReply
 ) {
   const postRepo = new PgPostRespository()
   const categoryRepo = new PgCategoryRespository()
@@ -41,7 +42,12 @@ async function createPostHandler(
   let post: Post
   try {
     post = await createPost.execute({
-      author,
+      author: {
+        id: author.id,
+        name: author.name,
+        email: author.email,
+        admin: author.admin,
+      },
       categories,
       excerpt,
       ogImageUrl,
@@ -55,6 +61,7 @@ async function createPostHandler(
     throw err
   }
 
+  reply.status(201)
   return post
 }
 

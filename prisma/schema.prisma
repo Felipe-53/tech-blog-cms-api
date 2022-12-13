@@ -32,7 +32,7 @@ model DBPost {
   slug String @unique
   ogImageUrl String
   body String
-  createdAt DateTime @default(now())
+  createdAt DateTime
   updatedAt DateTime?
   authorId String @db.Uuid
   author DBAuthor @relation(fields: [authorId], references: [id])

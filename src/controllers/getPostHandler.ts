@@ -1,6 +1,7 @@
 import { Static, Type } from "@sinclair/typebox"
 import { FastifyRequest } from "fastify"
 import { Author } from "../entities/Author"
+import { BadRequest } from "../errors/BadRequest"
 import { PgPostRespository } from "../repositories/implentations/postgres/PgPostRepository"
 import { FindAllPosts } from "../use-cases/Post/FindAllPosts/FindAllPosts"
 import { FindPostBySlug } from "../use-cases/Post/FindPostBySlug/FindPostBySlug"
@@ -19,12 +20,13 @@ async function getPostHandler(
 
   const postRepo = new PgPostRespository()
 
-  let slug: string | undefined
-  if ((slug = req.query.slug)) {
+  if (req.query.slug) {
+    const { slug } = req.query
     const findPostBySlug = new FindPostBySlug(postRepo)
     // TODO: add authorId to the search
     const post = await findPostBySlug.execute(slug)
-    if (post) return post
+    if (!post) throw new BadRequest(`Post with slug ${slug} not found`)
+    return post
   }
 
   const findAllPosts = new FindAllPosts(postRepo)

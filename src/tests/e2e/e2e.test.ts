@@ -10,7 +10,7 @@ import { Category } from "../../entities/Category"
 import { faker } from "@faker-js/faker"
 import env from "../../env"
 import { CreateAuthor } from "../../use-cases/Author/CreateAuthor"
-import bcrypt from "bcrypt"
+import { Post } from "../../entities/Post"
 
 let server = buildServer()
 let seedAuthor: Author
@@ -62,7 +62,7 @@ afterEach(async () => {
   await eraseDbData()
 })
 
-test("Should not be able to login with incorrect credentials", async () => {
+test("Should NOT be able to login with incorrect credentials", async () => {
   const response = await server.inject({
     path: "/login",
     method: "POST",
@@ -96,7 +96,7 @@ test("Should be able to login with correct credentials", async () => {
   expect(verifiedPayload.id).toBe(seedAuthor.id)
 })
 
-test("Should not be able to create an author without credentials", async () => {
+test("Should NOT be able to create an author without credentials", async () => {
   const response = await server.inject({
     path: "/author",
     method: "POST",
@@ -129,3 +129,72 @@ test("Should be able to create an author providing correct credentials", async (
   expect(response.statusCode).toBe(201)
   expect(response.json().id).toBeTypeOf("string")
 })
+
+test("Should be able to create and find created post", async () => {
+  const token = await getAuthenticationToken()
+
+  const payload = {
+    title: "My Blog Post",
+    body: faker.lorem.sentences(5, "\n"),
+    categories: [seedCategory],
+    excerpt: faker.lorem.sentence(),
+    ogImageUrl: faker.internet.url(),
+  }
+
+  const createPostResponse = await server.inject({
+    path: "/post",
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    payload,
+  })
+
+  expect(createPostResponse.statusCode).toBe(201)
+
+  const createdPost = createPostResponse.json<Post>()
+
+  const findBySlugResponse = await server.inject({
+    path: "/post",
+    method: "GET",
+    query: {
+      slug: createdPost.slug,
+    },
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  })
+
+  expect(findBySlugResponse.statusCode).toBe(200)
+  expect(findBySlugResponse.json()).toStrictEqual(createdPost)
+})
+
+test("Should return 400 on non-existing post search", async () => {
+  const token = await getAuthenticationToken()
+
+  const findBySlugResponse = await server.inject({
+    path: "/post",
+    method: "GET",
+    query: {
+      slug: "non-existing",
+    },
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  })
+
+  expect(findBySlugResponse.statusCode).toBe(400)
+})
+
+async function getAuthenticationToken() {
+  const loginResponse = await server.inject({
+    path: "/login",
+    method: "POST",
+    payload: {
+      email: seedAuthor.email,
+      password: "secret",
+    },
+  })
+
+  return loginResponse.json().token as string
+}
