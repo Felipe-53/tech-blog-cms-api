@@ -164,9 +164,23 @@ test("Should be able to create and find created post", async () => {
 
   expect(findBySlugResponse.statusCode).toBe(200)
   expect(findBySlugResponse.json()).toStrictEqual(createdPost)
+
+  const findAllResponse = await server.inject({
+    path: "/post",
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  })
+  const findAllResponsePayload = findAllResponse.json() as Post[]
+
+  expect(findAllResponse.statusCode).toBe(200)
+  expect(Array.isArray(findAllResponsePayload)).toBe(true)
+  expect(findAllResponsePayload.length).toBe(1)
+  expect(findAllResponsePayload[0]).toStrictEqual(createdPost)
 })
 
-test("Should return 400 on non-existing post search", async () => {
+test("Should return 204 on non-existing post search", async () => {
   const token = await getAuthenticationToken()
 
   const findBySlugResponse = await server.inject({
@@ -177,7 +191,7 @@ test("Should return 400 on non-existing post search", async () => {
     },
   })
 
-  expect(findBySlugResponse.statusCode).toBe(400)
+  expect(findBySlugResponse.statusCode).toBe(204)
 })
 
 async function getAuthenticationToken() {
