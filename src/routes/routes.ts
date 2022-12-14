@@ -10,15 +10,16 @@ import {
 } from "../controllers/createCategoryHandler"
 import { getCategoryHandler } from "../controllers/getCateoryHandler"
 import {
-  getPostHandler,
+  getPostBySlugHandler,
   getPostPathParams,
-} from "../controllers/getPostHandler"
+} from "../controllers/getPostBySlugHandler"
 import { loginBodyData, loginHandler } from "../controllers/loginHandler"
 import {
   createAuthorBody,
   createAuthorHandler,
 } from "../controllers/createAuthorHandler"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
+import { getPostsHandler } from "../controllers/getPostsHandler"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.route({
@@ -69,12 +70,18 @@ export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
   })
 
   app.route({
+    url: "/post",
+    method: "GET",
+    handler: getPostsHandler,
+  })
+
+  app.route({
     url: "/post/:slug",
     method: "GET",
     schema: {
       params: getPostPathParams,
     },
-    handler: getPostHandler,
+    handler: getPostBySlugHandler,
   })
 
   app.route({
