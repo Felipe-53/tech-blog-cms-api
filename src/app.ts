@@ -17,7 +17,7 @@ async function start() {
     }
   }
 
-  const app = buildServer()
+  const app = buildServer({ logger: true })
 
   const addr = await app.listen({
     port: 3500,
