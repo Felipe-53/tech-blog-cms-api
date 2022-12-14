@@ -6,22 +6,22 @@ import { PgPostRespository } from "../repositories/implentations/postgres/PgPost
 import { FindAllPosts } from "../use-cases/Post/FindAllPosts/FindAllPosts"
 import { FindPostBySlug } from "../use-cases/Post/FindPostBySlug/FindPostBySlug"
 
-const getPostQueryParams = Type.Object({
+const getPostPathParams = Type.Object({
   slug: Type.Optional(Type.String()),
 })
 
-type GetPostQueryParams = Static<typeof getPostQueryParams>
+type GetPostPathParams = Static<typeof getPostPathParams>
 
 async function getPostHandler(
-  req: FastifyRequest<{ Querystring: GetPostQueryParams }>
+  req: FastifyRequest<{ Params: GetPostPathParams }>
 ) {
   // @ts-ignore
   const author = req.user as Author
 
   const postRepo = new PgPostRespository()
 
-  if (req.query.slug) {
-    const { slug } = req.query
+  if (req.params.slug) {
+    const { slug } = req.params
     const findPostBySlug = new FindPostBySlug(postRepo)
     // TODO: add authorId to the search
     const post = await findPostBySlug.execute(slug)
@@ -35,4 +35,4 @@ async function getPostHandler(
   return posts
 }
 
-export { getPostHandler, getPostQueryParams }
+export { getPostHandler, getPostPathParams }

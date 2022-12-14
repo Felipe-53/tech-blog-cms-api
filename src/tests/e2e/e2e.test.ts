@@ -155,11 +155,8 @@ test("Should be able to create and find created post", async () => {
   const createdPost = createPostResponse.json<Post>()
 
   const findBySlugResponse = await server.inject({
-    path: "/post",
+    path: `/post/${createdPost.slug}`,
     method: "GET",
-    query: {
-      slug: createdPost.slug,
-    },
     headers: {
       authorization: `Bearer ${token}`,
     },
@@ -173,11 +170,8 @@ test("Should return 400 on non-existing post search", async () => {
   const token = await getAuthenticationToken()
 
   const findBySlugResponse = await server.inject({
-    path: "/post",
+    path: "/post/non-existing",
     method: "GET",
-    query: {
-      slug: "non-existing",
-    },
     headers: {
       authorization: `Bearer ${token}`,
     },
