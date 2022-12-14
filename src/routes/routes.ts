@@ -11,7 +11,7 @@ import {
 import { getCategoryHandler } from "../controllers/getCateoryHandler"
 import {
   getPostHandler,
-  getPostQueryParams,
+  getPostPathParams,
 } from "../controllers/getPostHandler"
 import { loginBodyData, loginHandler } from "../controllers/loginHandler"
 import {
@@ -69,10 +69,10 @@ export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
   })
 
   app.route({
-    url: "/post",
+    url: "/post/:slug",
     method: "GET",
     schema: {
-      querystring: getPostQueryParams,
+      params: getPostPathParams,
     },
     handler: getPostHandler,
   })
