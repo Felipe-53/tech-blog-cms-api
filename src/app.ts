@@ -17,14 +17,23 @@ async function start() {
     }
   }
 
-  const app = buildServer({ logger: true })
+  const app = buildServer({
+    logger: {
+      transport: {
+        target: "pino-pretty",
+        // pino-pretty options
+        options: {
+          translateTime: "SYS:HH:MM:ss",
+          ignore: "pid,hostname",
+        },
+      },
+    },
+  })
 
-  const addr = await app.listen({
+  await app.listen({
     port: 3500,
     host: "0.0.0.0",
   })
-
-  console.log(`Listing on ${addr}`)
 }
 
 start().catch((err) => {

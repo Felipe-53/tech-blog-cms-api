@@ -1,4 +1,4 @@
-import fastify from "fastify"
+import fastify, { FastifyServerOptions } from "fastify"
 import { openRoutes, authenticatedRoutes } from "./routes/routes"
 import { HTTPError } from "./errors/HTTPError"
 import fastifyJwt, { JWT } from "@fastify/jwt"
@@ -10,10 +10,8 @@ declare module "fastify" {
   }
 }
 
-function buildServer({ logger } = { logger: false }) {
-  const server = fastify({
-    logger,
-  })
+function buildServer(opts?: FastifyServerOptions) {
+  const server = fastify(opts)
 
   server.setErrorHandler(async (error, req, reply) => {
     server.log.error(error)
