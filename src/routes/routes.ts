@@ -20,6 +20,7 @@ import {
 } from "../controllers/createAuthorHandler"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
 import { getPostsHandler } from "../controllers/getPostsHandler"
+import { vercelIntegrationHook } from "../hooks/vercelIntegrationHook"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.route({
@@ -66,6 +67,7 @@ export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
     schema: {
       body: createPostData,
     },
+    onResponse: vercelIntegrationHook,
     handler: createPostHandler,
   })
 
