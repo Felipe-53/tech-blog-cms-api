@@ -25,6 +25,7 @@ export class TriggerNewVercelDeployment {
     const token = env.vercel_api_token
 
     const response = await fetch(fetchUrl, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
