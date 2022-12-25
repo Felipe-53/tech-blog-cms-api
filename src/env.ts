@@ -5,7 +5,9 @@ const result = config()
 const env = {
   database_url: process.env.DATABASE_URL as string,
   secret_key: process.env.SECRET_KEY as string,
-  node_env: process.env.NODE_ENV! as string,
+  node_env: process.env.NODE_ENV as string,
+  vercel_api_url: process.env.VERCEL_API_URL as string,
+  vercel_api_token: process.env.VERCEL_API_TOKEN as string,
 }
 
 assertDefinedKeys(env)
