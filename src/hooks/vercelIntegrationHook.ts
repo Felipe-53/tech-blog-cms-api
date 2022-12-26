@@ -10,11 +10,17 @@ export async function vercelIntegrationHook(
   if (!(reply.statusCode === 200 || reply.statusCode === 201)) return
 
   const triggerDeployment = new TriggerNewVercelDeployment()
-  const response = await triggerDeployment.execute()
-  if (!response.ok) {
-    req.log.error("Unable to request vercel deployment")
-    req.log.error(await response.json())
-  }
-  req.log.info("Successful vercel deployment")
-  req.log.info(await response.json())
+
+  triggerDeployment
+    .execute()
+    .then((response) => {
+      if (!response.ok) {
+        req.log.error("Unable to trigger vercel deployment")
+        response.json().then((body) => req.log.error(body))
+        return
+      }
+      req.log.info("Successful vercel deployment")
+      response.json().then((body) => req.log.info(body))
+    })
+    .catch((err) => req.log.error(err))
 }
