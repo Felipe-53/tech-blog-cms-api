@@ -2,6 +2,8 @@ import fastify, { FastifyServerOptions } from "fastify"
 import { openRoutes, authenticatedRoutes } from "./routes/routes"
 import { HTTPError } from "./errors/HTTPError"
 import fastifyJwt, { JWT } from "@fastify/jwt"
+import fastifySwagger from "@fastify/swagger"
+import swaggerUI from "@fastify/swagger-ui"
 import env from "./env"
 
 declare module "fastify" {
@@ -30,6 +32,17 @@ function buildServer(opts?: FastifyServerOptions) {
     })
   })
 
+  server.register(fastifySwagger, {
+    openapi: {
+      info: {
+        title: "Tech Blog CMS API",
+        description: "Content management system for tech blog",
+        version: "0.1.0",
+      },
+    },
+  })
+
+  server.register(swaggerUI)
   server.register(fastifyJwt, { secret: env.secret_key })
   server.register(openRoutes)
   server.register(authenticatedRoutes)
