@@ -21,6 +21,7 @@ import {
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
 import { getPostsHandler } from "../controllers/getPostsHandler"
 import { vercelIntegrationHook } from "../hooks/vercelIntegrationHook"
+import { jwtAuthHook } from "../hooks/jwtAuthHook"
 
 export const openRoutes: FastifyPluginAsync = async (app) => {
   app.route({
@@ -53,13 +54,7 @@ export const openRoutes: FastifyPluginAsync = async (app) => {
 }
 
 export const authenticatedRoutes: FastifyPluginAsync = async (app) => {
-  app.addHook("onRequest", async (req) => {
-    try {
-      await req.jwtVerify()
-    } catch (err) {
-      throw new Unauthorized("Token malformed or abscent")
-    }
-  })
+  app.addHook("onRequest", jwtAuthHook)
 
   app.route({
     url: "/post",

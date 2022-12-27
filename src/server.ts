@@ -5,6 +5,7 @@ import fastifyJwt, { JWT } from "@fastify/jwt"
 import fastifySwagger from "@fastify/swagger"
 import swaggerUI from "@fastify/swagger-ui"
 import env from "./env"
+import { jwtAuthHook } from "./hooks/jwtAuthHook"
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -13,6 +14,8 @@ declare module "fastify" {
 }
 
 function buildServer(opts?: FastifyServerOptions) {
+  const { secret_key, node_env } = env
+
   const server = fastify(opts)
 
   server.setErrorHandler(async (error, req, reply) => {
@@ -32,6 +35,8 @@ function buildServer(opts?: FastifyServerOptions) {
     })
   })
 
+  server.register(fastifyJwt, { secret: secret_key })
+
   server.register(fastifySwagger, {
     openapi: {
       info: {
@@ -42,8 +47,11 @@ function buildServer(opts?: FastifyServerOptions) {
     },
   })
 
-  server.register(swaggerUI)
-  server.register(fastifyJwt, { secret: env.secret_key })
+  server.register(swaggerUI, {
+    uiHooks: {
+      onRequest: node_env === "production" ? jwtAuthHook : undefined,
+    },
+  })
   server.register(openRoutes)
   server.register(authenticatedRoutes)
 
