@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
-import { Unauthorized } from "../errors/Unauthorized"
+import { PgAuthorRepository } from "../../repositories/implentations/postgres/PgAuthorRepository"
+import { Unauthorized } from "../../errors/Unauthorized"
 import bcrypt from "bcrypt"
-import { Author } from "../entities/Author"
-import { Login } from "../use-cases/Author/Login/Login"
-import { LoginData } from "../schemas/authorSchema"
+import { Author } from "../../entities/Author"
+import { Login } from "../../use-cases/Author/Login/Login"
+import { LoginData } from "../../schemas/authorSchema"
 
 async function loginHandler(req: FastifyRequest<{ Body: LoginData }>) {
   const { email, password } = req.body

@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify"
-import { loginHandler } from "../controllers/loginHandler"
-import { createAuthorHandler } from "../controllers/createAuthorHandler"
+import { loginHandler } from "../controllers/authorControllers/loginHandler"
+import { createAuthorHandler } from "../controllers/authorControllers/createAuthorHandler"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
 import {
   simpleAuthHeaderSchema,

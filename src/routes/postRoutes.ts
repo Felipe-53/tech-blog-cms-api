@@ -1,10 +1,10 @@
 import { FastifyPluginAsync } from "fastify"
-import { createPostHandler } from "../controllers/createPostHandler"
+import { createPostHandler } from "../controllers/postControllers/createPostHandler"
 import {
   getPostBySlugHandler,
   getPostPathParams,
-} from "../controllers/getPostBySlugHandler"
-import { getPostsHandler } from "../controllers/getPostsHandler"
+} from "../controllers/postControllers/getPostBySlugHandler"
+import { getPostsHandler } from "../controllers/postControllers/getPostsHandler"
 import { vercelIntegrationHook } from "../hooks/vercelIntegrationHook"
 import { jwtAuthHook } from "../hooks/jwtAuthHook"
 import {

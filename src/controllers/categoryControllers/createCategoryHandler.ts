@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { Type, Static } from "@sinclair/typebox"
-import { PgCategoryRespository } from "../repositories/implentations/postgres/PgCategoryRepository"
-import { CreateCategory } from "../use-cases/Category/CreateCategory/CreateCategory"
+import { PgCategoryRespository } from "../../repositories/implentations/postgres/PgCategoryRepository"
+import { CreateCategory } from "../../use-cases/Category/CreateCategory/CreateCategory"
 
 const createCategoryData = Type.Object({
   name: Type.String(),

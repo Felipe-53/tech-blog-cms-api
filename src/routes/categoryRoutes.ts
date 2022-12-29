@@ -2,8 +2,8 @@ import { FastifyPluginAsync } from "fastify"
 import {
   createCategoryData,
   createCategoryHandler,
-} from "../controllers/createCategoryHandler"
-import { getCategoryHandler } from "../controllers/getCateoryHandler"
+} from "../controllers/categoryControllers/createCategoryHandler"
+import { getCategoryHandler } from "../controllers/categoryControllers/getCateoryHandler"
 import { jwtAuthHook } from "../hooks/jwtAuthHook"
 
 export const categoryRoutes: FastifyPluginAsync = async (app) => {

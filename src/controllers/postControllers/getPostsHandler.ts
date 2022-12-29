@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify"
-import { PgPostRespository } from "../repositories/implentations/postgres/PgPostRepository"
-import { FindAllPosts } from "../use-cases/Post/FindAllPosts/FindAllPosts"
+import { PgPostRespository } from "../../repositories/implentations/postgres/PgPostRepository"
+import { FindAllPosts } from "../../use-cases/Post/FindAllPosts/FindAllPosts"
 
 async function getPostsHandler(req: FastifyRequest) {
   // @ts-ignore

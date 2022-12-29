@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
-import { InputAuthorData } from "../schemas/authorSchema"
-import { CreateAuthor } from "../use-cases/Author/CreateAuthor"
+import { PgAuthorRepository } from "../../repositories/implentations/postgres/PgAuthorRepository"
+import { InputAuthorData } from "../../schemas/authorSchema"
+import { CreateAuthor } from "../../use-cases/Author/CreateAuthor"
 
 async function createAuthorHandler(
   req: FastifyRequest<{ Body: InputAuthorData }>,

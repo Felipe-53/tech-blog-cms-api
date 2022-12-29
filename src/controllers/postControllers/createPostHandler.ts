@@ -2,14 +2,14 @@ import { FastifyReply, FastifyRequest } from "fastify"
 import {
   CreatePost,
   InconsistentData,
-} from "../use-cases/Post/CreatePost/CreatePost"
-import { PgPostRespository } from "../repositories/implentations/postgres/PgPostRepository"
-import { PgCategoryRespository } from "../repositories/implentations/postgres/PgCategoryRepository"
-import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
-import { Author } from "../entities/Author"
-import { Post } from "../entities/Post"
-import { BadRequest } from "../errors/BadRequest"
-import { InputPostData } from "../schemas/postSchema"
+} from "../../use-cases/Post/CreatePost/CreatePost"
+import { PgPostRespository } from "../../repositories/implentations/postgres/PgPostRepository"
+import { PgCategoryRespository } from "../../repositories/implentations/postgres/PgCategoryRepository"
+import { PgAuthorRepository } from "../../repositories/implentations/postgres/PgAuthorRepository"
+import { Author } from "../../entities/Author"
+import { Post } from "../../entities/Post"
+import { BadRequest } from "../../errors/BadRequest"
+import { InputPostData } from "../../schemas/postSchema"
 
 async function createPostHandler(
   req: FastifyRequest<{ Body: InputPostData }>,

@@ -1,8 +1,8 @@
 import { Static, Type } from "@sinclair/typebox"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { Author } from "../entities/Author"
-import { PgPostRespository } from "../repositories/implentations/postgres/PgPostRepository"
-import { FindPostBySlug } from "../use-cases/Post/FindPostBySlug/FindPostBySlug"
+import { Author } from "../../entities/Author"
+import { PgPostRespository } from "../../repositories/implentations/postgres/PgPostRepository"
+import { FindPostBySlug } from "../../use-cases/Post/FindPostBySlug/FindPostBySlug"
 
 const getPostPathParams = Type.Object({
   slug: Type.String(),
