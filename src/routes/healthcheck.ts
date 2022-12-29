@@ -1,21 +1,18 @@
 import { FastifyPluginAsync } from "fastify"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
 import { Type } from "@sinclair/typebox"
-import { unauthorizedResponseSchema } from "../controllers/controllerSchemas"
+import { simpleAuthHeaderSchema } from "../controllers/controllerSchemas"
 
 export const healthcheckRoute: FastifyPluginAsync = async (app) => {
   app.route({
     url: "/healthcheck",
     method: "GET",
     schema: {
-      headers: Type.Object({
-        "X-Secret-Key": Type.String(),
-      }),
+      headers: simpleAuthHeaderSchema,
       response: {
         200: Type.Object({
           ok: Type.Boolean({ default: true }),
         }),
-        401: unauthorizedResponseSchema,
       },
     },
     onRequest: simpleAuthHook,

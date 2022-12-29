@@ -2,10 +2,7 @@ import { FastifyPluginAsync } from "fastify"
 import { loginHandler } from "../controllers/authorControllers/loginHandler"
 import { createAuthorHandler } from "../controllers/authorControllers/createAuthorHandler"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
-import {
-  simpleAuthHeaderSchema,
-  unauthorizedResponseSchema,
-} from "../controllers/controllerSchemas"
+import { simpleAuthHeaderSchema } from "../controllers/controllerSchemas"
 import {
   inputAuthorDataSchema,
   loginDataSchema,
@@ -20,7 +17,6 @@ export const authorRoutes: FastifyPluginAsync = async (app) => {
     schema: {
       body: loginDataSchema,
       response: {
-        401: unauthorizedResponseSchema,
         200: loginResponseSchema,
       },
     },
@@ -35,7 +31,6 @@ export const authorRoutes: FastifyPluginAsync = async (app) => {
       body: inputAuthorDataSchema,
       response: {
         200: serializedAuthorDataSchema,
-        401: unauthorizedResponseSchema,
       },
     },
     onRequest: simpleAuthHook,

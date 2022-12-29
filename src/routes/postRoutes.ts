@@ -11,7 +11,6 @@ import {
   inputPostDataSchema,
   serializedPostDataSchema,
 } from "../schemas/postSchema"
-import { badRequestResponseSchema } from "../controllers/controllerSchemas"
 import { Type } from "@sinclair/typebox"
 
 export const postRoutes: FastifyPluginAsync = async (app) => {
@@ -24,7 +23,6 @@ export const postRoutes: FastifyPluginAsync = async (app) => {
       body: inputPostDataSchema,
       response: {
         201: serializedPostDataSchema,
-        400: badRequestResponseSchema,
       },
     },
     onResponse: vercelIntegrationHook,
