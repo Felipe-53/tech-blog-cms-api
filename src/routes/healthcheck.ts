@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from "fastify"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
 import { Type } from "@sinclair/typebox"
-import { UnauthorizedResponse } from "../controllers/schemas"
+import { unauthorizedResponseSchema } from "../controllers/controllerSchemas"
 
 export const healthcheckRoute: FastifyPluginAsync = async (app) => {
   app.route({
@@ -15,7 +15,7 @@ export const healthcheckRoute: FastifyPluginAsync = async (app) => {
         200: Type.Object({
           ok: Type.Boolean({ default: true }),
         }),
-        401: UnauthorizedResponse,
+        401: unauthorizedResponseSchema,
       },
     },
     onRequest: simpleAuthHook,
