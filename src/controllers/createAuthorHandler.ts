@@ -1,22 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
-import { Type, Static } from "@sinclair/typebox"
-import { Unauthorized } from "../errors/Unauthorized"
-import env from "../env"
-import bcrypt from "bcrypt"
+import { InputAuthorData } from "../schemas/authorSchema"
 import { CreateAuthor } from "../use-cases/Author/CreateAuthor"
 
-const createAuthorBody = Type.Object({
-  name: Type.String(),
-  email: Type.String(),
-  password: Type.String(),
-  admin: Type.Boolean(),
-})
-
-type CreateAuthorBody = Static<typeof createAuthorBody>
-
 async function createAuthorHandler(
-  req: FastifyRequest<{ Body: CreateAuthorBody }>,
+  req: FastifyRequest<{ Body: InputAuthorData }>,
   reply: FastifyReply
 ) {
   const { name, email, admin, password } = req.body
@@ -37,4 +25,4 @@ async function createAuthorHandler(
   return author
 }
 
-export { createAuthorHandler, createAuthorBody }
+export { createAuthorHandler }

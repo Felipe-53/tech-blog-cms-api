@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { Type, Static } from "@sinclair/typebox"
 import {
   CreatePost,
   InconsistentData,
@@ -10,24 +9,10 @@ import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAut
 import { Author } from "../entities/Author"
 import { Post } from "../entities/Post"
 import { BadRequest } from "../errors/BadRequest"
-
-const createPostData = Type.Object({
-  body: Type.String(),
-  title: Type.String(),
-  excerpt: Type.String(),
-  categories: Type.Array(
-    Type.Object({
-      id: Type.String(),
-      name: Type.String(),
-    })
-  ),
-  ogImageUrl: Type.String(),
-})
-
-type CreatePostDataType = Static<typeof createPostData>
+import { InputPostData } from "../schemas/postSchema"
 
 async function createPostHandler(
-  req: FastifyRequest<{ Body: CreatePostDataType }>,
+  req: FastifyRequest<{ Body: InputPostData }>,
   reply: FastifyReply
 ) {
   const postRepo = new PgPostRespository()
@@ -65,4 +50,4 @@ async function createPostHandler(
   return post
 }
 
-export { createPostHandler, createPostData }
+export { createPostHandler }
