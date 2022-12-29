@@ -1,11 +1,14 @@
 import fastify, { FastifyServerOptions } from "fastify"
-import { openRoutes, authenticatedRoutes } from "./routes/routes"
 import { HTTPError } from "./errors/HTTPError"
 import fastifyJwt, { JWT } from "@fastify/jwt"
 import fastifySwagger from "@fastify/swagger"
 import swaggerUI from "@fastify/swagger-ui"
 import env from "./env"
 import { jwtAuthHook } from "./hooks/jwtAuthHook"
+import { authorRoutes } from "./routes/authorRoutes"
+import { postRoutes } from "./routes/postRoutes"
+import { categoryRoutes } from "./routes/categoryRoutes"
+import { healthcheckRoute } from "./routes/healthcheck"
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -52,8 +55,11 @@ function buildServer(opts?: FastifyServerOptions) {
       onRequest: node_env === "production" ? jwtAuthHook : undefined,
     },
   })
-  server.register(openRoutes)
-  server.register(authenticatedRoutes)
+
+  server.register(healthcheckRoute)
+  server.register(authorRoutes)
+  server.register(postRoutes)
+  server.register(categoryRoutes)
 
   server.addHook("preHandler", async (request) => {
     request.jwt = server.jwt
