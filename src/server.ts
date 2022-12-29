@@ -23,11 +23,11 @@ function buildServer(opts?: FastifyServerOptions) {
 
   server.setErrorHandler(async (error, req, reply) => {
     server.log.error(error)
+
     if (error instanceof HTTPError) {
       reply.status(error.code)
       reply.send({
-        code: error.code,
-        message: error.message,
+        error: error.message,
       })
       return reply
     }
@@ -60,6 +60,10 @@ function buildServer(opts?: FastifyServerOptions) {
   server.register(authorRoutes)
   server.register(postRoutes)
   server.register(categoryRoutes)
+
+  server.get("/boom", async () => {
+    throw new Error("kaboom")
+  })
 
   server.addHook("preHandler", async (request) => {
     request.jwt = server.jwt
