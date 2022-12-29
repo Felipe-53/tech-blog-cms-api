@@ -22,7 +22,7 @@ async function loginHandler(req: FastifyRequest<{ Body: LoginData }>) {
   try {
     author = await loginService.execute({ email, password })
   } catch {
-    throw new Unauthorized()
+    throw new Unauthorized("Incorrect Credentials")
   }
 
   const tokenPayload = new Author(
