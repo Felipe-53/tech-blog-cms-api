@@ -1,6 +1,6 @@
 import { Type as T, Static } from "@sinclair/typebox"
 import { serializedAuthorDataSchema } from "./authorSchema"
-import { serializedCategoryDataSchema } from "./categorySchema"
+import { serializedCategoryArrayDataSchema } from "./categorySchema"
 
 const inputPostDataSchema = T.Object({
   body: T.String(),
@@ -21,11 +21,11 @@ const serializedPostDataSchema = T.Object({
   body: T.String(),
   author: serializedAuthorDataSchema,
   excerpt: T.String(),
-  categories: serializedCategoryDataSchema,
+  categories: serializedCategoryArrayDataSchema,
   slug: T.String(),
   ogImageUrl: T.String(),
-  createdAt: T.Date(),
-  updatedAt: T.Date(),
+  createdAt: T.String(),
+  updatedAt: T.Union([T.String(), T.Null()]),
 })
 
 type InputPostData = Static<typeof inputPostDataSchema>

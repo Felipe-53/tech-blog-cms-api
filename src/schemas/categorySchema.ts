@@ -5,8 +5,19 @@ const serializedCategoryDataSchema = T.Object({
   name: T.String(),
 })
 
+const serializedCategoryArrayDataSchema = T.Array(
+  T.Object({
+    id: T.String(),
+    name: T.String(),
+  })
+)
+
 const inputCategoryDataSchema = T.Omit(serializedCategoryDataSchema, ["id"])
 
 type InputAuthorData = Static<typeof inputCategoryDataSchema>
 
-export { serializedCategoryDataSchema, inputCategoryDataSchema }
+export {
+  serializedCategoryDataSchema,
+  inputCategoryDataSchema,
+  serializedCategoryArrayDataSchema,
+}

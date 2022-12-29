@@ -2,14 +2,16 @@ import { FastifyPluginAsync } from "fastify"
 import { loginHandler } from "../controllers/loginHandler"
 import { createAuthorHandler } from "../controllers/createAuthorHandler"
 import { simpleAuthHook } from "../hooks/simpleAuthHook"
-import { UnauthorizedResponse } from "../controllers/schemas"
+import {
+  simpleAuthHeaderSchema,
+  UnauthorizedResponse,
+} from "../controllers/schemas"
 import {
   inputAuthorDataSchema,
   loginDataSchema,
   loginResponseSchema,
   serializedAuthorDataSchema,
 } from "../schemas/authorSchema"
-import { Type } from "@sinclair/typebox"
 
 export const authorRoutes: FastifyPluginAsync = async (app) => {
   app.route({
@@ -29,9 +31,7 @@ export const authorRoutes: FastifyPluginAsync = async (app) => {
     url: "/author",
     method: "POST",
     schema: {
-      headers: Type.Object({
-        "x-secre-key": Type.String(),
-      }),
+      headers: simpleAuthHeaderSchema,
       body: inputAuthorDataSchema,
       response: {
         200: serializedAuthorDataSchema,
