@@ -17,7 +17,7 @@ declare module "fastify" {
 }
 
 function buildServer(opts?: FastifyServerOptions) {
-  const { secret_key, node_env } = env
+  const { secret_key } = env
 
   const server = fastify(opts)
 
@@ -52,7 +52,11 @@ function buildServer(opts?: FastifyServerOptions) {
 
   server.register(swaggerUI, {
     uiHooks: {
-      onRequest: node_env === "production" ? jwtAuthHook : undefined,
+      onRequest: async (request) => {
+        if (env.node_env === "production") {
+          await jwtAuthHook(request)
+        }
+      },
     },
   })
 

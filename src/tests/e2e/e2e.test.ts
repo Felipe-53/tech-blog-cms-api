@@ -1,4 +1,12 @@
-import { afterEach, assert, beforeAll, beforeEach, expect, test } from "vitest"
+import {
+  afterEach,
+  assert,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+} from "vitest"
 import { execSync } from "child_process"
 import { buildServer } from "../../server"
 import { prisma } from "../../repositories/implentations/postgres"
@@ -192,6 +200,36 @@ test("Should return 204 on non-existing post search", async () => {
   })
 
   expect(findBySlugResponse.statusCode).toBe(204)
+})
+
+test("Should not be able to access the documentation when not authenticated in production", async () => {
+  env.node_env = "production"
+
+  const response = await server.inject({
+    path: "/documentation",
+  })
+
+  expect(response.statusCode).toBe(401)
+
+  env.node_env = "test"
+})
+
+test("Should be able to access documentation when logged in inproduction", async () => {
+  env.node_env = "production"
+
+  const token = await getAuthenticationToken()
+
+  const response = await server.inject({
+    path: "/documentation",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  })
+
+  expect(response.statusCode).toBe(302)
+  expect(response.headers["location"]).toBe("./documentation/static/index.html")
+
+  env.node_env = "test"
 })
 
 async function getAuthenticationToken() {
