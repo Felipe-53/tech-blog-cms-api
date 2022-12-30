@@ -1,5 +1,3 @@
 # Tech Blog CMS API
 
-_Under Devleopment_
-
-CRUD API for blog posts built with tests, SOLID and DDD in mind. Focus on arquitecture.
+Content Management System API for my website built with tests, SOLID and DDD in mind. Focus on clean architecture.
