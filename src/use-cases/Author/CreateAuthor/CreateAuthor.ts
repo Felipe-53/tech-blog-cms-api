@@ -1,12 +1,12 @@
-import { CreateAuthorDTO } from "../../../dtos/CreateAuthorDTO"
 import { IAuthorRepository } from "../../../repositories/IAuthorRepository"
+import { InputAuthorData as CreateAuthorDto } from "../../../schemas/authorSchema"
 import { IHashService } from "../../interfaces/IHashService"
 
 export function makeCreateAuthor(hashService: IHashService) {
   class CreateAuthor {
     constructor(private authorRepository: IAuthorRepository) {}
 
-    async execute(data: CreateAuthorDTO) {
+    async execute(data: CreateAuthorDto) {
       const { admin, email, name, password } = data
       const passwordHash = await hashService.hash(password)
 

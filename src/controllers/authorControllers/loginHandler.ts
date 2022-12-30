@@ -1,19 +1,12 @@
 import { FastifyRequest } from "fastify"
-import { Type, Static } from "@sinclair/typebox"
-import { PgAuthorRepository } from "../repositories/implentations/postgres/PgAuthorRepository"
-import { Unauthorized } from "../errors/Unauthorized"
+import { PgAuthorRepository } from "../../repositories/implentations/postgres/PgAuthorRepository"
+import { Unauthorized } from "../../errors/Unauthorized"
 import bcrypt from "bcrypt"
-import { Author } from "../entities/Author"
-import { Login } from "../use-cases/Author/Login/Login"
+import { Author } from "../../entities/Author"
+import { Login } from "../../use-cases/Author/Login/Login"
+import { LoginData } from "../../schemas/authorSchema"
 
-const loginBodyData = Type.Object({
-  email: Type.String(),
-  password: Type.String(),
-})
-
-type LoginBodyData = Static<typeof loginBodyData>
-
-async function loginHandler(req: FastifyRequest<{ Body: LoginBodyData }>) {
+async function loginHandler(req: FastifyRequest<{ Body: LoginData }>) {
   const { email, password } = req.body
 
   const authorRepository = new PgAuthorRepository()
@@ -29,7 +22,7 @@ async function loginHandler(req: FastifyRequest<{ Body: LoginBodyData }>) {
   try {
     author = await loginService.execute({ email, password })
   } catch {
-    throw new Unauthorized("Not authenticated")
+    throw new Unauthorized("Incorrect Credentials")
   }
 
   const tokenPayload = new Author(
@@ -44,4 +37,4 @@ async function loginHandler(req: FastifyRequest<{ Body: LoginBodyData }>) {
   return { token }
 }
 
-export { loginHandler, loginBodyData }
+export { loginHandler }
