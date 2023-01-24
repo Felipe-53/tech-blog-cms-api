@@ -65,10 +65,6 @@ function buildServer(opts?: FastifyServerOptions) {
   server.register(postRoutes)
   server.register(categoryRoutes)
 
-  server.get("/boom", async () => {
-    throw new Error("kaboom")
-  })
-
   server.addHook("preHandler", async (request) => {
     request.jwt = server.jwt
   })
