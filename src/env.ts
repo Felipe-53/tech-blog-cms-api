@@ -8,6 +8,7 @@ const env = {
   node_env: process.env.NODE_ENV as string,
   vercel_api_url: process.env.VERCEL_API_URL as string,
   vercel_api_token: process.env.VERCEL_API_TOKEN as string,
+  aws_sqs_queue_url: process.env.AWS_SQS_QUEUE_URL as string,
 }
 
 assertDefinedKeys(env)
