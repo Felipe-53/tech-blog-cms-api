@@ -12,6 +12,7 @@ import { BadRequest } from "../../errors/BadRequest"
 import { InputPostData } from "../../schemas/postSchema"
 import env from "../../env"
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs"
+import { SQSService } from "../../use-cases/SQS/SQSSevice"
 
 async function createPostHandler(
   req: FastifyRequest<{ Body: InputPostData }>,
@@ -49,20 +50,15 @@ async function createPostHandler(
   }
 
   if (env.node_env === "production") {
-    const client = new SQSClient({ region: "sa-east-1" })
-    const sendMessageCommand = new SendMessageCommand({
-      QueueUrl: env.aws_sqs_queue_url,
-      MessageBody: JSON.stringify({
-        title: post.title,
-        excerpt: post.excerpt,
-        link: `https://felipebarbosa.dev/artigos/${post.slug}`,
-      }),
+    SQSService.sendMessage({
+      title: post.title,
+      excerpt: post.excerpt,
+      link: `https://felipebarbosa.dev/artigos/${post.slug}`,
     })
-    client
-      .send(sendMessageCommand)
-      .then(() => reply.log.info("Successfully sent message to SQS"))
+      .then((response) => {
+        reply.log.info(response)
+      })
       .catch((err) => {
-        reply.log.error("Failed to send message do SQS")
         reply.log.error(err)
       })
   }
