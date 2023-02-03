@@ -2,7 +2,10 @@ import { test, expect } from "vitest"
 
 import { SQSService } from "./SQSSevice"
 
-test("AWS SQS wrapper", async () => {
+// Before running this test, you should
+// deactivate the SQS lambda trigger
+// associated with it
+test.skip("AWS SQS wrapper", async () => {
   const sendMessageResponse = await SQSService.sendMessage({
     hello: "world",
   })
