@@ -36,6 +36,7 @@ function prismaToPostEntity(prismaPost: PrismaPostEntity) {
       email: prismaPost.author.email,
       admin: prismaPost.author.admin,
     },
+    note: prismaPost.note,
     ogImageUrl: prismaPost.ogImageUrl,
     categories: prismaPost.categories.map((cat) => {
       return {
@@ -71,6 +72,7 @@ export class PgPostRespository implements IPostRepository {
         authorId: post.author.id,
         createdAt: post.createdAt,
         updatedAt: null,
+        note: post.note,
         categories: {
           create: [...cats],
         },
