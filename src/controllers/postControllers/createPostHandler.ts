@@ -25,7 +25,7 @@ async function createPostHandler(
   const createPost = new CreatePost(postRepo, categoryRepo, authorRepo)
 
   const author = req.user as Author
-  const { title, body, categories, excerpt, ogImageUrl } = req.body
+  const { title, body, categories, excerpt, ogImageUrl, note } = req.body
 
   let post: Post
   try {
@@ -41,6 +41,7 @@ async function createPostHandler(
       ogImageUrl,
       body,
       title,
+      note,
     })
   } catch (err) {
     if (err instanceof InconsistentData) {
@@ -50,10 +51,12 @@ async function createPostHandler(
   }
 
   if (env.node_env === "production") {
+    const urlPathComponent = post.note ? "tech-notes" : "artigos"
+
     SQSService.sendMessage({
       title: post.title,
       excerpt: post.excerpt,
-      link: `https://felipebarbosa.dev/artigos/${post.slug}`,
+      link: `https://felipebarbosa.dev/${urlPathComponent}/${post.slug}`,
     })
       .then((response) => {
         reply.log.info(response)
