@@ -47,6 +47,7 @@ beforeAll(async () => {
     excerpt: "",
     categories,
     ogImageUrl: "http://example.com",
+    note: false,
   }
 })
 

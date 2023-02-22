@@ -19,6 +19,7 @@ import { faker } from "@faker-js/faker"
 import env from "../../env"
 import { CreateAuthor } from "../../use-cases/Author/CreateAuthor"
 import { Post } from "../../entities/Post"
+import { InputPostData } from "../../schemas/postSchema"
 
 let server = buildServer()
 let seedAuthor: Author
@@ -147,7 +148,8 @@ test("Should be able to create and find created post", async () => {
     categories: [seedCategory],
     excerpt: faker.lorem.sentence(),
     ogImageUrl: faker.internet.url(),
-  }
+    note: false,
+  } as InputPostData
 
   const createPostResponse = await server.inject({
     path: "/post",
