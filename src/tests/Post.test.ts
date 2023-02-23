@@ -116,7 +116,7 @@ describe("Post CRUD", async () => {
 
   it("Should be found by slug", async () => {
     const findPostBySlug = new FindPostBySlug(postRepository)
-    const searchedPost = await findPostBySlug.execute("my-first-post", false)
+    const searchedPost = await findPostBySlug.execute("my-first-post")
     expect(searchedPost).not.toBeNull()
   })
 
