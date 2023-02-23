@@ -8,6 +8,7 @@ import { getPostsHandler } from "../controllers/postControllers/getPostsHandler"
 import { vercelIntegrationHook } from "../hooks/vercelIntegrationHook"
 import { jwtAuthHook } from "../hooks/jwtAuthHook"
 import {
+  getPostQuerySchema,
   inputPostDataSchema,
   serializedPostDataSchema,
 } from "../schemas/postSchema"
@@ -36,6 +37,7 @@ export const postRoutes: FastifyPluginAsync = async (app) => {
       response: {
         200: Type.Array(serializedPostDataSchema),
       },
+      querystring: getPostQuerySchema,
     },
     handler: getPostsHandler,
   })
@@ -48,6 +50,7 @@ export const postRoutes: FastifyPluginAsync = async (app) => {
       response: {
         200: serializedPostDataSchema,
       },
+      querystring: getPostQuerySchema,
     },
     handler: getPostBySlugHandler,
   })

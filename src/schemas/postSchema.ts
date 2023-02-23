@@ -13,6 +13,7 @@ const inputPostDataSchema = T.Object({
     })
   ),
   ogImageUrl: T.String(),
+  note: T.Boolean(),
 })
 
 const serializedPostDataSchema = T.Object({
@@ -26,8 +27,21 @@ const serializedPostDataSchema = T.Object({
   ogImageUrl: T.String(),
   createdAt: T.String(),
   updatedAt: T.Union([T.String(), T.Null()]),
+  note: T.Boolean(),
 })
 
 type InputPostData = Static<typeof inputPostDataSchema>
 
-export { inputPostDataSchema, InputPostData, serializedPostDataSchema }
+const getPostQuerySchema = T.Object({
+  note: T.Boolean(),
+})
+
+type GetPostQuery = Static<typeof getPostQuerySchema>
+
+export {
+  inputPostDataSchema,
+  InputPostData,
+  serializedPostDataSchema,
+  getPostQuerySchema,
+  GetPostQuery,
+}

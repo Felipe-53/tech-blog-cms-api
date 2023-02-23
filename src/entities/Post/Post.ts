@@ -19,6 +19,7 @@ export function PostFactory(props: {
     ogImageUrl: string
     createdAt: Date
     updatedAt: Date | null
+    note: boolean
 
     constructor(
       props: MakeOptional<
@@ -36,6 +37,7 @@ export function PostFactory(props: {
       this.createdAt = props.createdAt || new Date()
       this.updatedAt = props.updatedAt || null
       this.slug = props.slug || slug(props.title)
+      this.note = props.note
     }
 
     set body(body: string) {
@@ -68,6 +70,7 @@ export function PostFactory(props: {
         ogImageUrl: this.ogImageUrl,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,
+        note: this.note,
       }
     }
   }

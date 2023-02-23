@@ -47,6 +47,7 @@ beforeAll(async () => {
     excerpt: "",
     categories,
     ogImageUrl: "http://example.com",
+    note: false,
   }
 })
 
@@ -104,20 +105,20 @@ describe("Post CRUD", async () => {
 
   it("Should be found within the repository", async () => {
     const findAllPosts = new FindAllPosts(postRepository)
-    const posts = await findAllPosts.execute(author.id)
+    const posts = await findAllPosts.execute(author.id, false)
     expect(posts.length).toBe(1)
     expect(posts[0].title).toBe("My First Post")
   })
 
   it("Should be found by slug", async () => {
     const findPostBySlug = new FindPostBySlug(postRepository)
-    const searchedPost = await findPostBySlug.execute("my-first-post")
+    const searchedPost = await findPostBySlug.execute("my-first-post", false)
     expect(searchedPost).not.toBeNull()
   })
 
   it("Should be able to update post", async () => {
     const findAllPosts = new FindAllPosts(postRepository)
-    const originalPost = (await findAllPosts.execute(author.id))[0]
+    const originalPost = (await findAllPosts.execute(author.id, false))[0]
     expect(originalPost).toBeDefined()
     originalPost.title = "My New Title"
     originalPost.body = "My New Body"
@@ -133,10 +134,10 @@ describe("Post CRUD", async () => {
     const findAllPosts = new FindAllPosts(postRepository)
     const deletePost = new DeletePost(postRepository)
 
-    const originalPost = (await findAllPosts.execute(author.id))[0]
+    const originalPost = (await findAllPosts.execute(author.id, false))[0]
     expect(originalPost).toBeDefined()
     await deletePost.execute(originalPost.id)
-    const posts = await findAllPosts.execute(author.id)
+    const posts = await findAllPosts.execute(author.id, false)
     expect(posts.length).toBe(0)
   })
 })

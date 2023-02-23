@@ -36,6 +36,7 @@ function prismaToPostEntity(prismaPost: PrismaPostEntity) {
       email: prismaPost.author.email,
       admin: prismaPost.author.admin,
     },
+    note: prismaPost.note,
     ogImageUrl: prismaPost.ogImageUrl,
     categories: prismaPost.categories.map((cat) => {
       return {
@@ -71,6 +72,7 @@ export class PgPostRespository implements IPostRepository {
         authorId: post.author.id,
         createdAt: post.createdAt,
         updatedAt: null,
+        note: post.note,
         categories: {
           create: [...cats],
         },
@@ -81,20 +83,22 @@ export class PgPostRespository implements IPostRepository {
     return prismaToPostEntity(createdPost)
   }
 
-  async findAllByAuthorId(authorId: string) {
+  async findAllByAuthorId(authorId: string, note: boolean) {
     const posts = await prisma.dBPost.findMany({
       where: {
         authorId,
+        note,
       },
       include,
     })
     return posts.map((post) => prismaToPostEntity(post))
   }
 
-  async findBySlug(slug: string) {
+  async findBySlug(slug: string, note: boolean) {
     const post = await prisma.dBPost.findFirst({
       where: {
         slug,
+        note,
       },
       include,
     })

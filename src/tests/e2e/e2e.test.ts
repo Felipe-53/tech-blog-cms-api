@@ -19,6 +19,7 @@ import { faker } from "@faker-js/faker"
 import env from "../../env"
 import { CreateAuthor } from "../../use-cases/Author/CreateAuthor"
 import { Post } from "../../entities/Post"
+import { InputPostData } from "../../schemas/postSchema"
 
 let server = buildServer()
 let seedAuthor: Author
@@ -147,7 +148,8 @@ test("Should be able to create and find created post", async () => {
     categories: [seedCategory],
     excerpt: faker.lorem.sentence(),
     ogImageUrl: faker.internet.url(),
-  }
+    note: false,
+  } as InputPostData
 
   const createPostResponse = await server.inject({
     path: "/post",
@@ -163,7 +165,7 @@ test("Should be able to create and find created post", async () => {
   const createdPost = createPostResponse.json<Post>()
 
   const findBySlugResponse = await server.inject({
-    path: `/post/${createdPost.slug}`,
+    path: `/post/${createdPost.slug}?note=false`,
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
@@ -174,7 +176,7 @@ test("Should be able to create and find created post", async () => {
   expect(findBySlugResponse.json()).toStrictEqual(createdPost)
 
   const findAllResponse = await server.inject({
-    path: "/post",
+    path: "/post?note=false",
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
@@ -192,7 +194,7 @@ test("Should return 204 on non-existing post search", async () => {
   const token = await getAuthenticationToken()
 
   const findBySlugResponse = await server.inject({
-    path: "/post/non-existing",
+    path: "/post/non-existing?note=false",
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
