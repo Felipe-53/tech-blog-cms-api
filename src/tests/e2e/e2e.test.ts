@@ -166,7 +166,7 @@ test("Should be able to create and find created post", async () => {
   const createdPost = createPostResponse.json<Post>()
 
   const findBySlugResponse = await server.inject({
-    path: `/post/${createdPost.slug}?note=false`,
+    path: `/post/${createdPost.slug}`,
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
