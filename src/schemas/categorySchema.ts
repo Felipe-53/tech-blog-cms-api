@@ -12,9 +12,19 @@ const inputCategoryDataSchema = T.Omit(serializedCategoryDataSchema, ["id"])
 
 type InputCategoryDataSchema = Static<typeof inputCategoryDataSchema>
 
+const querystringCategoryDataSchema = T.Object({
+  note: T.Boolean(),
+})
+
+type QuerystringCategoryDataSchema = Static<
+  typeof querystringCategoryDataSchema
+>
+
 export {
   serializedCategoryDataSchema,
   inputCategoryDataSchema,
   InputCategoryDataSchema,
   serializedCategoryArrayDataSchema,
+  querystringCategoryDataSchema,
+  QuerystringCategoryDataSchema,
 }
