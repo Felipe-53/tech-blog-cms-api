@@ -32,4 +32,16 @@ const serializedPostDataSchema = T.Object({
 
 type InputPostData = Static<typeof inputPostDataSchema>
 
-export { inputPostDataSchema, InputPostData, serializedPostDataSchema }
+const getPostQuerySchema = T.Object({
+  note: T.Boolean(),
+})
+
+type GetPostQuery = Static<typeof getPostQuerySchema>
+
+export {
+  inputPostDataSchema,
+  InputPostData,
+  serializedPostDataSchema,
+  getPostQuerySchema,
+  GetPostQuery,
+}
