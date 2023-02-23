@@ -19,6 +19,7 @@ model DBAuthor {
 model DBCategory {
   id    String                @id @db.Uuid
   name  String                @unique
+  note  Boolean
   posts DBCategoriesToPosts[]
 }
 

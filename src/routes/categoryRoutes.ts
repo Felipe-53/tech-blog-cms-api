@@ -1,10 +1,8 @@
 import { FastifyPluginAsync } from "fastify"
-import {
-  createCategoryData,
-  createCategoryHandler,
-} from "../controllers/categoryControllers/createCategoryHandler"
+import { createCategoryHandler } from "../controllers/categoryControllers/createCategoryHandler"
 import { getCategoryHandler } from "../controllers/categoryControllers/getCateoryHandler"
 import { jwtAuthHook } from "../hooks/jwtAuthHook"
+import { inputCategoryDataSchema } from "../schemas/categorySchema"
 
 export const categoryRoutes: FastifyPluginAsync = async (app) => {
   app.addHook("onRequest", jwtAuthHook)
@@ -13,7 +11,7 @@ export const categoryRoutes: FastifyPluginAsync = async (app) => {
     url: "/category",
     method: "POST",
     schema: {
-      body: createCategoryData,
+      body: inputCategoryDataSchema,
     },
     handler: createCategoryHandler,
   })

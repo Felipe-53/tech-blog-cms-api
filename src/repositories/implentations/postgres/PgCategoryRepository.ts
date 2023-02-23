@@ -8,6 +8,7 @@ export class PgCategoryRespository implements ICategoryRepository {
       data: {
         id: category.id,
         name: category.name,
+        note: category.note,
       },
     })
     return category
@@ -15,7 +16,7 @@ export class PgCategoryRespository implements ICategoryRepository {
 
   async findAll() {
     const cats = await prisma.dBCategory.findMany()
-    return cats.map((cat) => new Category(cat.name, cat.id))
+    return cats.map((cat) => new Category(cat.name, cat.note, cat.id))
   }
 
   async findById(id: string) {
@@ -26,7 +27,7 @@ export class PgCategoryRespository implements ICategoryRepository {
     })
     if (!cat) return null
 
-    return new Category(cat.name, cat.id)
+    return new Category(cat.name, cat.note, cat.id)
   }
 
   async delete(id: string) {

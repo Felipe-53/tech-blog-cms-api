@@ -1,28 +1,23 @@
 import { FastifyRequest } from "fastify"
-import { Type, Static } from "@sinclair/typebox"
 import { PgCategoryRespository } from "../../repositories/implentations/postgres/PgCategoryRepository"
 import { CreateCategory } from "../../use-cases/Category/CreateCategory/CreateCategory"
-
-const createCategoryData = Type.Object({
-  name: Type.String(),
-})
-
-type CreateCategoryDataType = Static<typeof createCategoryData>
+import { InputCategoryDataSchema } from "../../schemas/categorySchema"
 
 async function createCategoryHandler(
-  req: FastifyRequest<{ Body: CreateCategoryDataType }>
+  req: FastifyRequest<{ Body: InputCategoryDataSchema }>
 ) {
   const categoryRepo = new PgCategoryRespository()
 
   const createCategory = new CreateCategory(categoryRepo)
 
-  const { name } = req.body
+  const { name, note } = req.body
 
   const cat = await createCategory.execute({
     name,
+    note,
   })
 
   return cat
 }
 
-export { createCategoryHandler, createCategoryData }
+export { createCategoryHandler }

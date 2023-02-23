@@ -4,7 +4,7 @@ export function CategoryFactory(props: { uuid: () => string }) {
   class Category {
     readonly id: string
 
-    constructor(public name: string, id?: string) {
+    constructor(public name: string, public note: boolean, id?: string) {
       this.id = id || uuid()
     }
   }

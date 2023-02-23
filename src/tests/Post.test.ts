@@ -37,8 +37,10 @@ beforeAll(async () => {
     admin: true,
   })
 
-  categories.push(await categoryRepository.create(new Category("Node")))
-  categories.push(await categoryRepository.create(new Category("TypeScript")))
+  categories.push(await categoryRepository.create(new Category("Node", false)))
+  categories.push(
+    await categoryRepository.create(new Category("TypeScript", false))
+  )
 
   newPostData = {
     author,
@@ -78,7 +80,9 @@ describe("Post CRUD", async () => {
 
     test("Has non-existing category in the repo", async () => {
       const postDataWrongCategory = JSON.parse(JSON.stringify(newPostData))
-      postDataWrongCategory.categories.push(new Category("Not in the repo"))
+      postDataWrongCategory.categories.push(
+        new Category("Not in the repo", false)
+      )
       const createPost = new CreatePost(
         postRepository,
         categoryRepository,

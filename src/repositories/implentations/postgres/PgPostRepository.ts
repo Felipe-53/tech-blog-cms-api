@@ -42,6 +42,7 @@ function prismaToPostEntity(prismaPost: PrismaPostEntity) {
       return {
         id: cat.categoryId,
         name: cat.category.name,
+        note: cat.category.note,
       }
     }),
   })

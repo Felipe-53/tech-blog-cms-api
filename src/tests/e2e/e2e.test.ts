@@ -61,6 +61,7 @@ beforeEach(async () => {
 
   seedCategory = await createCategory.execute({
     name: "TypeScript",
+    note: false,
   })
 
   server = buildServer()
