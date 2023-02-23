@@ -2,5 +2,9 @@ import { Post } from "../entities/Post"
 
 export type CreatePostDTO = Omit<
   Post,
-  "id" | "createdAt" | "updatedAt" | "slug" | "toJSON"
->
+  "id" | "categories" | "createdAt" | "updatedAt" | "slug" | "toJSON"
+> & {
+  categories: {
+    id: string
+  }[]
+}

@@ -9,7 +9,6 @@ const inputPostDataSchema = T.Object({
   categories: T.Array(
     T.Object({
       id: T.String(),
-      name: T.String(),
     })
   ),
   ogImageUrl: T.String(),

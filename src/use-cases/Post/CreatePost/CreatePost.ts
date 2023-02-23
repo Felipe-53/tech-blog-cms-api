@@ -1,4 +1,5 @@
 import { CreatePostDTO } from "../../../dtos/CreatePostDTO"
+import { Category } from "../../../entities/Category"
 import { Post } from "../../../entities/Post"
 import { IAuthorRepository } from "../../../repositories/IAuthorRepository"
 import { ICategoryRepository } from "../../../repositories/ICategoryRepository"
@@ -18,6 +19,7 @@ export class CreatePost {
     const author = await this.authorRepository.findById(authorId)
     if (!author)
       throw new InconsistentData(`No such author with id ${authorId}`)
+
     const existingCategories = await this.categoryRepository.findAll()
     const existingCategoriesIds = existingCategories.map((cat) => cat.id)
     for (const cat of data.categories) {
@@ -27,7 +29,16 @@ export class CreatePost {
         )
       }
     }
-    const post = new Post(data)
+
+    const categories = data.categories.map((cat) => {
+      return existingCategories.find((c) => c.id === cat.id)
+    }) as Category[]
+
+    const post = new Post({
+      ...data,
+      categories,
+    })
+
     await this.postRepository.create(post)
     return post
   }
