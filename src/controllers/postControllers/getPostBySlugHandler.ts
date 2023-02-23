@@ -18,12 +18,12 @@ async function getPostBySlugHandler(
   // @ts-ignore
   const author = req.user as Author
   const { slug } = req.params
-  const note = req.query.note
 
   const postRepo = new PgPostRespository()
 
+  // TODO: require the author to be the author of the post
   const findPostBySlug = new FindPostBySlug(postRepo)
-  const post = await findPostBySlug.execute(slug, note)
+  const post = await findPostBySlug.execute(slug)
   if (!post) return reply.status(204).send()
   return post
 }

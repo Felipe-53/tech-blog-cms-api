@@ -95,11 +95,10 @@ export class PgPostRespository implements IPostRepository {
     return posts.map((post) => prismaToPostEntity(post))
   }
 
-  async findBySlug(slug: string, note: boolean) {
-    const post = await prisma.dBPost.findFirst({
+  async findBySlug(slug: string) {
+    const post = await prisma.dBPost.findUnique({
       where: {
         slug,
-        note,
       },
       include,
     })

@@ -50,7 +50,6 @@ export const postRoutes: FastifyPluginAsync = async (app) => {
       response: {
         200: serializedPostDataSchema,
       },
-      querystring: getPostQuerySchema,
     },
     handler: getPostBySlugHandler,
   })
