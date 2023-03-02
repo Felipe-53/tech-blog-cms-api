@@ -7,23 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model DBAuthor {
+model Author {
   id           String   @id @db.Uuid
   email        String   @unique
   passwordHash String
   name         String
   admin        Boolean
-  posts        DBPost[]
+  posts        Post[]
+
+  @@map("authors")
 }
 
-model DBCategory {
+model Category {
   id    String                @id @db.Uuid
   name  String                @unique
   note  Boolean
-  posts DBCategoriesToPosts[]
+  posts CategoriesToPosts[]
+
+  @@map("categories")
 }
 
-model DBPost {
+model Post {
   id         String                @id @db.Uuid
   title      String
   excerpt    String
@@ -34,15 +38,18 @@ model DBPost {
   updatedAt  DateTime?
   authorId   String                @db.Uuid
   note       Boolean
-  categories DBCategoriesToPosts[]
-  author     DBAuthor              @relation(fields: [authorId], references: [id])
+  categories CategoriesToPosts[]
+  author     Author              @relation(fields: [authorId], references: [id])
+
+  @@map("posts")
 }
 
-model DBCategoriesToPosts {
+model CategoriesToPosts {
   categoryId String     @db.Uuid
   postId     String     @db.Uuid
-  category   DBCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  post       DBPost     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@id([categoryId, postId])
+  @@map("categories_to_posts")
 }
