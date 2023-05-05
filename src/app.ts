@@ -1,3 +1,4 @@
+import cors from "@fastify/cors"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime"
 import { execSync } from "child_process"
 import { prisma } from "./repositories/implentations/postgres"
@@ -29,6 +30,8 @@ async function start() {
       },
     },
   })
+
+  app.register(cors)
 
   await app.listen({
     port: 3500,
